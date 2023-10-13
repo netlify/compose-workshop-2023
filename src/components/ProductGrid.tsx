@@ -1,4 +1,6 @@
 // import Button from './Button';
+import { useEffect, useState } from 'react';
+import { getProducts } from '../graphql';
 import Card from './Card';
 
 const items = [
@@ -21,11 +23,22 @@ const items = [
 ];
 
 function ProductGrid() {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    getProducts()
+      .then(d => {
+        console.log(d);
+        setProducts(d);
+      })
+      .catch(e => {
+        console.error(e);
+      });
+  }, []);
+
   return (
     <section className="flex gap-8 mt-8">
-      {items.map(item => (
-        <Card bg="white">{item.name}</Card>
-      ))}
+      {products?.map(item => <Card bg="white">{item.title}</Card>)}
     </section>
   );
 }
