@@ -3,6 +3,7 @@ import netlifyLogo from '../assets/netlify.svg';
 import Card from './Card';
 
 function Hero() {
+  const city = window.geo?.city;
   return (
     <Card bg="gradient">
       <div className="flex justify-center">
@@ -15,6 +16,7 @@ function Hero() {
         Start your first composable project with TypeScript, React, Vite,
         Tailwind, and Netlify.
       </p>
+      {city && <p className="text-sm text-white">Hello, {city}!</p>}
     </Card>
   );
 }
