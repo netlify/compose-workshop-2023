@@ -3,12 +3,16 @@
 
 import { components, hooks, utils } from '@generouted/react-router/client';
 
-export type Path = `/` | `/about`;
+export type Path = `/` | `/about` | `/story`;
 
 export type Params = {};
 
 export type ModalPath = never;
 
 export const { Link, Navigate } = components<Path, Params>();
-export const { useModals, useNavigate, useParams } = hooks<Path, Params, ModalPath>();
+export const { useModals, useNavigate, useParams } = hooks<
+  Path,
+  Params,
+  ModalPath
+>();
 export const { redirect } = utils<Path, Params>();

@@ -13,7 +13,7 @@ function Hero() {
         <img alt="Netlify logo" height={100} src={netlifyLogo} width={100} />
       </div>
       <h1 className="text-4xl font-extrabold text-white">
-        Welcome to Netlify Compose!
+        Welcome to HalloweenTown!
       </h1>
       <p className="text-xl text-white">
         Start your first composable project with TypeScript, React, Vite,

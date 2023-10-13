@@ -6,7 +6,7 @@ interface Props {
 export default function Button({ bg, children }: Props) {
   const backgroundStyles =
     bg === 'gradient'
-      ? 'bg-gradient-to-r from-blue-500 to-teal-500'
+      ? 'bg-gradient-to-r from-orange-500 to-red-500'
       : 'bg-white';
   return (
     <div
