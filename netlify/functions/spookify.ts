@@ -8,9 +8,13 @@ const openai = new OpenAI({ apiKey: OPENAI_KEY });
 export default async (req: Request, context: Context) => {
   const { messages } = await req.json();
 
+  const userPrompts = messages.filter(message => message.role === 'user');
+  console.log(userPrompts);
+
   const systemPrompt = {
     role: 'system',
-    content: 'You tell spooky Halloween stories.',
+    content:
+      "You tell spooky Halloween stories about the JavaScript ecosystem. You aren't shy to use emoji to tell your tales from the crypt.",
   };
 
   const response: OpenAI.Chat.ChatCompletion =
@@ -22,7 +26,6 @@ export default async (req: Request, context: Context) => {
     });
 
   const stream = OpenAIStream(response);
-
   return new StreamingTextResponse(stream);
 };
 

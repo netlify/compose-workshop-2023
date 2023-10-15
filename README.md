@@ -1,2 +1,40 @@
 # workshop_first-composable-project
+
 Netlify Compose 2023 Workshop: Using core Netlify features to create your first composable project
+
+### What are we going to build?
+
+A Halloween-themed e-commerce bookstore!
+
+### What are we going to learn?
+
+- A primer on Netlify UI and CLI
+- How to use Netlify core primitives
+  - Intro to basic serverless functions
+  - On-Demand Builders: cache Functions with a TTL
+  - Fine-grained cache control: persist browser cache across deploys
+  - Stream API responses from OpenAI
+  - Edge Functions: add responses headers and transform response bodies with geolocation data
+- How to pull content from multiple different data sources
+  - Storyblok
+  - Contentstack
+- How to use the Netlify SDK to build connectors to custom data sources
+  - AWS S3 bucket
+
+## Checklist
+
+~- [x] Fetch follower count with ODBs and redirects (use case: rate-limiting)~
+
+- [x] Fetch book data from CSV with fine-grained cache control (use case: 304s from function responses)
+- [x] Fetch recommended merch data with geolocation data (use case: personalization)
+- [x] Generate text with Functions 2.0 streaming (use case: AI funsies)
+- [ ] React Suspense
+
+- [ ] Replace merch JSON API with Connect
+- [ ] Replace books CSV API with SDK custom connector
+
+## Questions for Runtime / Dev Foundations
+
+- [ ] Now that Functions support context.geo, when is best to use Functions vs Edge Functions for geolocation personalization?
+- [ ] Lots of function templates are missing from `netlify functions:create`
+- [ ] Can the function templates be updated to Functions 2.0 syntax?

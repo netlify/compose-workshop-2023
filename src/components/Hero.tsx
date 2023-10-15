@@ -1,22 +1,17 @@
-import netlifyLogo from '../assets/netlify.svg';
-
-import Card from './Card';
+import Card from '~/components/Card';
 
 function Hero() {
-  const city = window.geo?.city;
   return (
-    <Card bg="gradient">
+    <Card type="orange">
       <div className="flex justify-center">
-        <img alt="Netlify logo" height={100} src={netlifyLogo} width={100} />
+        <span className="text-8xl">🎃</span>
       </div>
-      <h1 className="text-4xl font-extrabold text-white">
-        Welcome to HalloweenTown!
+      <h1 className="text-4xl font-extrabold text-white drop-shadow-md">
+        Welcome to our Halloween bookstore!
       </h1>
       <p className="text-xl text-white">
-        Start your first composable project with TypeScript, React, Vite,
-        Tailwind, and Netlify.
+        Your one-stop shop for spooky stories and swag.
       </p>
-      {city && <p className="text-sm text-white">Hello, {city}!</p>}
     </Card>
   );
 }
