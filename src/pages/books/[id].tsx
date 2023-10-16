@@ -8,7 +8,7 @@ import Footer from '~/components/ui/Footer';
 import { useNavigate, useParams } from '~/router';
 
 export default function Book() {
-  const { books } = useContext(DataContext);
+  const { books, fetchBooks } = useContext(DataContext);
 
   const navigate = useNavigate();
   const { id } = useParams('/books/:id');
@@ -17,6 +17,7 @@ export default function Book() {
   const book = books.find(b => b.id === id);
 
   if (!book) {
+    fetchBooks();
     return <Card type="loading" />;
   }
 
@@ -24,10 +25,7 @@ export default function Book() {
     <section>
       {/* @ts-expect-error will fix later */}
       <Product {...book} />
-      {/* @ts-expect-error will fix later */}
-      <Button onClick={() => navigate({ pathname: '/', hash: '#bookshelf' })}>
-        ← Back
-      </Button>
+      <Button onClick={() => navigate('/')}>← Back</Button>
       <Footer />
     </section>
   );

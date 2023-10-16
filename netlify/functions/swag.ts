@@ -12,7 +12,7 @@ function selectRandomItems(arr, n: number) {
 
 export default async (req: Request, context: Context) => {
   const { origin } = new URL(req.url);
-  const response = await fetch(`${origin}/merch.json`);
+  const response = await fetch(`${origin}/swag.json`);
   const { merchandise } = await response.json();
 
   const hasGeo = context.geo?.latitude && context.geo?.longitude;
@@ -31,5 +31,5 @@ export default async (req: Request, context: Context) => {
 
 export const config: Config = {
   method: 'GET',
-  path: '/api/merch',
+  path: '/api/swag',
 };

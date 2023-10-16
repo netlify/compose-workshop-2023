@@ -19,7 +19,7 @@ function StoreProvider({ children }: Props) {
 
   const fetchSwag = async () => {
     if (!swag.length) {
-      const response = await fetch('/api/merch');
+      const response = await fetch('/api/swag');
       const data = await response.json();
       setSwag(data);
     }

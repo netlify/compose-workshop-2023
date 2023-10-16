@@ -4,7 +4,7 @@ import DataContext from '~/context/store';
 import Books from '~/components/Books';
 import Footer from '~/components/ui/Footer';
 import Hero from '~/components/Hero';
-import Merch from '~/components/Merch';
+import Swag from '~/components/Swag';
 
 export default function Home() {
   const { books, fetchBooks, swag, fetchSwag } = useContext(DataContext);
@@ -20,7 +20,7 @@ export default function Home() {
   return (
     <section>
       <Hero />
-      <Merch city={city} items={swag} />
+      <Swag city={city} items={swag} />
       <Books books={books} />
       <Footer />
     </section>

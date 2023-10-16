@@ -33,5 +33,6 @@ export default async (request: Request, context: Context) => {
 };
 
 export const config: Config = {
-  path: ['/', '/about', '/story'],
+  path: ['/*'],
+  excludedPath: ['/api/*', '/assets/*', '/images/*'],
 };

@@ -18,7 +18,7 @@ interface Props {
   }>;
 }
 
-function Merch({ city, items }: Props) {
+function Swag({ city, items }: Props) {
   return (
     <section>
       <Heading id="swag">
@@ -34,7 +34,7 @@ function Merch({ city, items }: Props) {
             />
             <h3 className="text-xl font-bold text-white">{item.name}</h3>
             <p className="text-xl text-green-500">${item.price}</p>
-            <Button>Add to cart</Button>
+            <Button>Buy now</Button>
           </Card>
         ))}
       </div>
@@ -42,4 +42,4 @@ function Merch({ city, items }: Props) {
   );
 }
 
-export default Merch;
+export default Swag;
