@@ -6,11 +6,12 @@
       "description": "Black T-shirt with a classic witch silhouette flying on a broomstick.",
       "price": 19.99,
       "rating": 4.5,
+      "slug": "witchy-tee",
       "location": {
         "latitude": 40.7128,
         "longitude": -74.006
       },
-      "imagePath": "/images/merch/witchy_tee.jpg"
+      "imagePath": "/images/swag/witchy_tee.jpg"
     },
     {
       "sku": "0002",
@@ -18,11 +19,12 @@
       "description": "Ceramic mug designed like a carved pumpkin. Perfect for your morning brew!",
       "price": 12.99,
       "rating": 4.2,
+      "slug": "pumpkin-mug",
       "location": {
         "latitude": 34.0522,
         "longitude": -118.2437
       },
-      "imagePath": "/images/merch/pumpkin_mug.jpg"
+      "imagePath": "/images/swag/pumpkin_mug.jpg"
     },
     {
       "sku": "0003",
@@ -30,11 +32,12 @@
       "description": "Decorative pillow with cute ghost patterns. Adds a spooky touch to any couch!",
       "price": 15.99,
       "rating": 4.7,
+      "slug": "ghostly-pillow",
       "location": {
         "latitude": 41.8781,
         "longitude": -87.6298
       },
-      "imagePath": "/images/merch/ghostly_pillow.jpg"
+      "imagePath": "/images/swag/ghostly_pillow.jpg"
     },
     {
       "sku": "0004",
@@ -42,11 +45,12 @@
       "description": "Baseball cap with embroidered vampire fangs and bat wings.",
       "price": 17.99,
       "rating": 4.4,
+      "slug": "vampire-cap",
       "location": {
         "latitude": 47.6062,
         "longitude": -122.3321
       },
-      "imagePath": "/images/merch/vampire_cap.jpg"
+      "imagePath": "/images/swag/vampire_cap.jpg"
     },
     {
       "sku": "0005",
@@ -54,11 +58,12 @@
       "description": "Kitchen apron with a humorous ribcage and bones design. Get spooky while cooking!",
       "price": 21.99,
       "rating": 4.8,
+      "slug": "skeleton-apron",
       "location": {
         "latitude": 32.7767,
         "longitude": -96.797
       },
-      "imagePath": "/images/merch/skeleton_apron.jpg"
+      "imagePath": "/images/swag/skeleton_apron.jpg"
     },
     {
       "sku": "0006",
@@ -66,11 +71,12 @@
       "description": "Comfy socks with playful zombie graphics. Walk like the undead!",
       "price": 9.99,
       "rating": 4.1,
+      "slug": "zombie-socks",
       "location": {
         "latitude": 25.7617,
         "longitude": -80.1918
       },
-      "imagePath": "/images/merch/zombie_socks.jpg"
+      "imagePath": "/images/swag/zombie_socks.jpg"
     },
     {
       "sku": "0007",
@@ -78,11 +84,12 @@
       "description": "A vintage-style poster featuring a haunted mansion. Ideal for Halloween home decor!",
       "price": 14.99,
       "rating": 4.6,
+      "slug": "haunted-house-poster",
       "location": {
         "latitude": 37.7749,
         "longitude": -122.4194
       },
-      "imagePath": "/images/merch/haunted_house_poster.jpg"
+      "imagePath": "/images/swag/haunted_house_poster.jpg"
     },
     {
       "sku": "0008",
@@ -90,11 +97,12 @@
       "description": "An intricately designed box with eerie patterns. Store your treasures... if you dare!",
       "price": 29.99,
       "rating": 4.7,
+      "slug": "cursed-jewelry-box",
       "location": {
         "latitude": 37.8044,
         "longitude": -122.2711
       },
-      "imagePath": "/images/merch/cursed_jewelry_box.jpg"
+      "imagePath": "/images/swag/cursed_jewelry_box.jpg"
     },
     {
       "sku": "0009",
@@ -102,11 +110,12 @@
       "description": "Fuzzy slippers that resemble monster feet. Stomp around your house in style!",
       "price": 23.99,
       "rating": 4.4,
+      "slug": "monster-slippers",
       "location": {
         "latitude": 39.9526,
         "longitude": -75.1652
       },
-      "imagePath": "/images/merch/monster_slippers.jpg"
+      "imagePath": "/images/swag/monster_slippers.jpg"
     },
     {
       "sku": "0010",
@@ -114,11 +123,12 @@
       "description": "A goblet fit for ghoulish drinks. Green-tinted with a goblin face design.",
       "price": 18.99,
       "rating": 4.3,
+      "slug": "goblin-goblet",
       "location": {
         "latitude": 44.9778,
         "longitude": -93.265
       },
-      "imagePath": "/images/merch/goblin_goblet.jpg"
+      "imagePath": "/images/swag/goblin_goblet.jpg"
     },
     {
       "sku": "0011",
@@ -126,11 +136,12 @@
       "description": "A candle holder shaped like a phantom's hand. Perfect for setting the Halloween mood!",
       "price": 16.99,
       "rating": 4.8,
+      "slug": "phantom-candle-holder",
       "location": {
         "latitude": 33.4484,
         "longitude": -112.074
       },
-      "imagePath": "/images/merch/phantom_candle_holder.jpg"
+      "imagePath": "/images/swag/phantom_candle_holder.jpg"
     },
     {
       "sku": "0012",
@@ -138,11 +149,12 @@
       "description": "A soft throw blanket with banshee and ghost patterns. Wrap yourself in spooky comfort!",
       "price": 28.99,
       "rating": 4.5,
+      "slug": "banshee-blanket",
       "location": {
         "latitude": 38.5816,
         "longitude": -121.4944
       },
-      "imagePath": "/images/merch/banshee_blanket.jpg"
+      "imagePath": "/images/swag/banshee_blanket.jpg"
     }
   ]
 }

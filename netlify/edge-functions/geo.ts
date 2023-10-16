@@ -1,27 +1,17 @@
 import { Config, Context } from '@netlify/edge-functions';
 
 export default async (request: Request, context: Context) => {
-  // Here's what's available on context.geo
-
-  // context: {
-  //   geo: {
-  //     city?: string;
-  //     country?: {
-  //       code?: string;
-  //       name?: string;
-  //     },
-  //     subdivision?: {
-  //       code?: string;
-  //       name?: string;
-  //     },
-  //     latitude?: number;
-  //     longitude?: number;
-  //     timezone?: string;
-  //   }
-  // }
-
   const response = await context.next();
   response.headers.set('x-custom-header', 'invoked');
+
+  // html GETs only
+  const isGET = request.method?.toUpperCase() === 'GET';
+  const isHTMLResponse = response.headers
+    .get('content-type')
+    ?.startsWith('text/html');
+  if (!isGET || !isHTMLResponse) {
+    return response;
+  }
 
   const body = await response.text();
   const transformedBody = body.replace(
@@ -33,5 +23,6 @@ export default async (request: Request, context: Context) => {
 };
 
 export const config: Config = {
-  path: ['/', '/about', '/story'],
+  path: '/*',
+  excludedPath: '/(api|assets|images)/*',
 };

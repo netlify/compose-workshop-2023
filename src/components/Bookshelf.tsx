@@ -1,23 +1,26 @@
+import { useContext, useEffect } from 'react';
+
+import DataContext from '~/context/store';
 import Heading from '~/components/ui/Heading';
 import Link from '~/components/ui/Link';
 
-interface Props {
-  books: Array<{
-    id: string;
-    imagePath: string;
-  }>;
-}
+function Bookshelf() {
+  const { books, fetchBooks } = useContext(DataContext);
 
-function Books({ books }: Props) {
+  useEffect(() => {
+    fetchBooks();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <section>
       <Heading id="bookshelf">👻 Browse our boooooks! 👻</Heading>
       <div className="flex my-8 bg-slate-600 rounded-xl gap-8 p-8 flex-wrap mt-8">
         {books.map(book => (
           <Link
-            key={book.id}
+            key={book.isbn}
             className="max-w-[calc(25%-24px)] hover:scale-105 transition-transform duration-300"
-            to={`/books/${book.id}`}
+            to={`/books/${book.slug}`}
           >
             <img
               className="aspect-square drop-shadow rounded-lg"
@@ -31,4 +34,4 @@ function Books({ books }: Props) {
   );
 }
 
-export default Books;
+export default Bookshelf;

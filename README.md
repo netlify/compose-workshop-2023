@@ -52,31 +52,31 @@ A Halloween-themed e-commerce bookstore!
 - `netlify link`
 - `netlify dev`
 
-3. Function primitives (books.ts)
+3. Branches and Deploy Previews
+
+- Create a new branch
+- Push the branch, open pull request
+- Navigate to Deploy Preview
+- Netlify Drawer
+
+4. Function primitives (books.ts)
 
 - Return data from a CSV in an API response
 - Functions 2.0 Config object
 - Fine-grained cache control
 
-4. Personalization with `context.geo` (merch.ts)
-5. Streaming API responses
+5. Personalization with `context.geo` (merch.ts)
+6. Streaming API responses
 
 - Environment variables
 
-6. CI/CD
+7. CI/CD
 
 - Push up changes to repo
 - Deploy logs
 - Build settings
   - Function region selection
 - Function logs
-
-7. Branches and Deploy Previews
-
-- Create a new branch
-- Push the branch, open pull request
-- Navigate to Deploy Preview
-- Netlify Drawer
 
 8. Building a content-driven app
 
