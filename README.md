@@ -11,7 +11,6 @@ A Halloween-themed e-commerce bookstore!
 - A primer on Netlify UI and CLI
 - How to use Netlify core primitives
   - Intro to basic serverless functions
-  - On-Demand Builders: cache Functions with a TTL
   - Fine-grained cache control: persist browser cache across deploys
   - Stream API responses from OpenAI
   - Edge Functions: add responses headers and transform response bodies with geolocation data
