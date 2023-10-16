@@ -1,4 +1,4 @@
-# Netlify Compose 2023 Workshop
+# Netlify Compose Workshop 2023
 
 Using core Netlify features to create your first composable project
 
