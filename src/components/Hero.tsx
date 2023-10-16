@@ -3,7 +3,7 @@ import Card from '~/components/ui/Card';
 import { getHero } from '~/graphql';
 
 function Hero() {
-  const [hero, setHero] = useState({});
+  const [hero, setHero] = useState<{ title: string; description: string }>();
 
   useEffect(() => {
     getHero()

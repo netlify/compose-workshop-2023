@@ -1,10 +1,29 @@
 import { useEffect, useState } from 'react';
-import netlifyMonogram from '~/assets/netlify-monogram.svg';
 import Link from '~/components/ui/Link';
 import { getAbout } from '~/graphql';
 
 export default function About() {
-  const [aboutData, setAboutData] = useState({});
+  const [aboutData, setAboutData] = useState<{
+    content: {
+      title: string;
+      headerImage: {
+        filename: string;
+      };
+      subHeaderImage: {
+        filename: string;
+      };
+      footerImage: {
+        filename: string;
+      };
+      description: string;
+      body: {
+        items: {
+          _uid: string;
+          itemValue: string;
+        }[];
+      }[];
+    };
+  }>();
 
   useEffect(() => {
     getAbout()
@@ -18,7 +37,6 @@ export default function About() {
       .catch(e => console.error(e));
   }, []);
 
-  console.log(aboutData?.content);
   const titleSplit = aboutData?.content?.title?.split('Netlify Compose 2023');
 
   const linkStyles = 'text-[#30e6e2] hover:underline hover:text-[#defffe]';
@@ -55,10 +73,7 @@ export default function About() {
             </Link>{' '}
             {titleSplit?.[1]}
           </h1>
-          <p>
-            This site is used as the demo site for Netlify Compose 2023
-            workshop. During this workshop, you will learn how to:
-          </p>
+          <p>{aboutData?.content?.description}</p>
           <ul className="mt-8 list-disc pl-5">
             {aboutData?.content?.body?.map(({ items }) => {
               return items?.map(i => {
