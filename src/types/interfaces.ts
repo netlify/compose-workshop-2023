@@ -4,7 +4,7 @@ export interface Book {
   imagePath: string;
   isbn: string;
   price: number;
-  slug: string;
+  id: string;
   title: string;
 }
 
