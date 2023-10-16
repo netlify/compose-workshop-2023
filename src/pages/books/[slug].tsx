@@ -7,14 +7,13 @@ import Product from '~/components/Product';
 import Footer from '~/components/ui/Footer';
 import { useNavigate, useParams } from '~/router';
 
-export default function Book() {
+export default function BookPage() {
   const { books, fetchBooks } = useContext(DataContext);
 
   const navigate = useNavigate();
-  const { id } = useParams('/books/:id');
+  const { slug } = useParams('/books/:slug');
 
-  // @ts-expect-error will fix later
-  const book = books.find(b => b.id === id);
+  const book = books.find(b => b.slug === slug);
 
   if (!book) {
     fetchBooks();
@@ -23,8 +22,7 @@ export default function Book() {
 
   return (
     <section>
-      {/* @ts-expect-error will fix later */}
-      <Product {...book} />
+      <Product name={book.title} {...book} />
       <Button onClick={() => navigate('/')}>← Back</Button>
       <Footer />
     </section>

@@ -29,7 +29,6 @@ export default function Nav() {
           ))}
         </ul>
       </nav>
-      <span className="text-xl font-bold text-white">🛒 Cart</span>
     </header>
   );
 }
