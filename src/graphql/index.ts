@@ -1,5 +1,5 @@
-const CONNECT_API_URL = `https://compose-conf-o5lhw4-prod.api.netlify-connect.com/graphql`;
-const API_TOKEN = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2OTcyMjgwMzYyNDMsImV4cCI6NDg1MDgyODAzNjI0MywiaXNzIjoibmV0bGlmeS1jb25uZWN0IiwiaHR0cHM6Ly9uZXRsaWZ5LmNvbS9qd3QvY2xhaW1zIjp7ImRhdGFfbGF5ZXJfaWQiOiJjYjM0ZTdmMi00YWVmLTQ1ZDgtOGViOC0zMmFiZWVkNTA1OTAiLCJkYXRhX2xheWVyX3Rva2VuX2lkIjoiYTdjNTIyMWEtODFhNi00MjNlLTg3YjktOGIzNjYwZThhMWJhIiwiYWNjb3VudF9wZXJtaXNzaW9ucyI6eyJyIjp0cnVlfX19.A6lTiggYCXAsHc7o7KfbnunPCju2FMBlcZsmW13smdY`;
+const CONNECT_API_URL = process.env.CONNECT_API_URL!;
+const API_TOKEN = process.env.CONNECT_API_AUTH_TOKEN!;
 
 export async function getProducts() {
   const query = `
@@ -33,11 +33,35 @@ export async function getProducts() {
   return result?.data?.allContentstackProduct?.nodes;
 }
 
+export async function getAbout() {
+  const query = `
+  query about {
+      storyblokEntry(full_slug: { eq: "about" }) {
+          id
+          content
+      }
+    }
+  `;
+
+  const response = await window.fetch(CONNECT_API_URL, {
+    method: `POST`,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${API_TOKEN}`,
+    },
+    body: JSON.stringify({ query }),
+  });
+
+  const result = await response.json();
+
+  return result?.data?.storyblokEntry;
+}
+
 export async function getHero() {
   const query = `
     query hero($id: String!) {
         contentstackHero(uid: { eq: $id }) {
-            slug: id
+            id
             title
             description
         }

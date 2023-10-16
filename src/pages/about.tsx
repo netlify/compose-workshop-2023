@@ -1,9 +1,26 @@
-import composeLogo from '~/assets/compose-logo.svg';
-import netlifyLogo from '~/assets/netlify-logo.svg';
+import { useEffect, useState } from 'react';
 import netlifyMonogram from '~/assets/netlify-monogram.svg';
 import Link from '~/components/ui/Link';
+import { getAbout } from '~/graphql';
 
 export default function About() {
+  const [aboutData, setAboutData] = useState({});
+
+  useEffect(() => {
+    getAbout()
+      .then(d => {
+        const content = JSON.parse(d?.content);
+        setAboutData({
+          ...d,
+          content,
+        });
+      })
+      .catch(e => console.error(e));
+  }, []);
+
+  console.log(aboutData?.content);
+  const titleSplit = aboutData?.content?.title?.split('Netlify Compose 2023');
+
   const linkStyles = 'text-[#30e6e2] hover:underline hover:text-[#defffe]';
   return (
     <section className="text-white">
@@ -12,36 +29,39 @@ export default function About() {
           alt="Netlify logo"
           className="my-2"
           height={90}
-          src={netlifyLogo}
+          src={aboutData?.content?.headerImage?.filename}
           width={220}
         />
         <img
           alt="Compose logo"
           className="my-2"
           height={105}
-          src={composeLogo}
+          src={aboutData?.content?.subHeaderImage?.filename}
           width={600}
         />
       </div>
       <div className="flex justify-center">
         <div className="max-w-[600px]">
           <h1 className="text-center text-xl mb-8">
-            Welcome to the{' '}
+            {titleSplit?.[0]}
             <Link
               className={linkStyles}
               to="https://www.netlify.com/conference/"
             >
               <strong>Netlify Compose 2023</strong>
             </Link>{' '}
-            conference!
+            {titleSplit?.[1]}
           </h1>
           <p>
             This site is used as the demo site for Netlify Compose 2023
             workshop. During this workshop, you will learn how to:
           </p>
           <ul className="mt-8 list-disc pl-5">
-            <li>Create your first site on Netlify</li>
-            <li>Trigger builds with Git and embrace a CI/CD workflow</li>
+            {aboutData?.content?.body?.map(({ items }) => {
+              return items?.map(i => {
+                return <li key={i?._uid}>{i.itemValue}</li>;
+              });
+            })}
             <li>
               Create Deploy Previews and collaborate using the Netlify Drawer
             </li>
