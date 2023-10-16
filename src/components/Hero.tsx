@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
 import netlifyLogo from '../assets/netlify.svg';
 import { getHero } from '../graphql';
-import Button from './Button';
+
 import Card from './Card';
 
 function Hero() {
-  const [count, setCount] = useState(0);
-
   const [hero, setHero] = useState({});
 
   useEffect(() => {
@@ -18,9 +16,6 @@ function Hero() {
         console.error(e);
       });
   }, []);
-
-  console.log(hero);
-
   return (
     <Card bg="gradient">
       <div className="flex justify-center">
@@ -28,9 +23,6 @@ function Hero() {
       </div>
       <h1 className="text-4xl font-extrabold text-white">{hero?.title}</h1>
       <p className="text-xl text-white">{hero?.description}</p>
-      <Button onClick={() => setCount(count => count + 1)}>
-        This button has been clicked {count} time{count === 1 ? '' : 's'}
-      </Button>
     </Card>
   );
 }
