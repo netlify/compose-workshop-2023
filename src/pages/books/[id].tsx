@@ -1,24 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useContext } from 'react';
 
-import Button from '~/components/Button';
-import Card from '~/components/Card';
+import DataContext from '~/context/store';
+import Button from '~/components/ui/Button';
+import Card from '~/components/ui/Card';
 import Product from '~/components/Product';
-import Footer from '~/components/Footer';
+import Footer from '~/components/ui/Footer';
 import { useNavigate, useParams } from '~/router';
 
 export default function Book() {
-  const [book, setBook] = useState(null);
+  const { books } = useContext(DataContext);
 
   const navigate = useNavigate();
   const { id } = useParams('/books/:id');
 
-  useEffect(() => {
-    if (id) {
-      fetch(`/api/books/${id}`)
-        .then(response => response.json())
-        .then(json => setBook(json));
-    }
-  }, [id]);
+  const book = books.find(b => b.id === id);
 
   if (!book) {
     return <Card type="loading" />;
@@ -27,7 +22,9 @@ export default function Book() {
   return (
     <section>
       <Product {...book} />
-      <Button onClick={() => navigate('/')}>← Back</Button>
+      <Button onClick={() => navigate({ pathname: '/', hash: '#bookshelf' })}>
+        ← Back
+      </Button>
       <Footer />
     </section>
   );

@@ -1,6 +1,5 @@
-import { Link } from 'react-router-dom';
-
-import Heading from '~/components/Heading';
+import Heading from '~/components/ui/Heading';
+import Link from '~/components/ui/Link';
 
 interface Props {
   books: Array<{
@@ -12,7 +11,7 @@ interface Props {
 function Books({ books }: Props) {
   return (
     <section>
-      <Heading>👻 Browse our boooooks! 👻</Heading>
+      <Heading id="bookshelf">👻 Browse our boooooks! 👻</Heading>
       <div className="flex my-8 bg-slate-600 rounded-xl gap-8 p-8 flex-wrap mt-8">
         {books.map(book => (
           <Link

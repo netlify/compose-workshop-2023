@@ -2,7 +2,7 @@ import { useChat } from 'ai/react';
 import { useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 
-import Button from '~/components/Button';
+import Button from '~/components/ui/Button';
 
 export default function Chat() {
   const {

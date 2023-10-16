@@ -1,6 +1,6 @@
-import Button from '~/components/Button';
-import Card from '~/components/Card';
-import Heading from '~/components/Heading';
+import Button from '~/components/ui/Button';
+import Card from '~/components/ui/Card';
+import Heading from '~/components/ui/Heading';
 
 interface Props {
   city?: string;
@@ -21,7 +21,7 @@ interface Props {
 function Merch({ city, items }: Props) {
   return (
     <section>
-      <Heading>
+      <Heading id="swag">
         {city ? `📍 Shop for swag in ${city} 📍` : 'Shop for swag'}
       </Heading>
       <div className="flex gap-8">
