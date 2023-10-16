@@ -31,7 +31,7 @@ function Swag() {
                 src={item.imagePath}
               />
             </Link>
-            <h3 className="text-xl font-bold text-white">{item.name}</h3>
+            <h3 className="text-xl font-bold text-white">{item?.name}</h3>
             <p className="text-xl text-green-500">${item.price}</p>
             <Button>Buy now</Button>
           </Card>

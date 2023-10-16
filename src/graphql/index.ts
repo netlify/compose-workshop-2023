@@ -10,6 +10,10 @@ export async function getProducts() {
             title
             rating
             description
+            image {
+              url
+            }
+            price
           }
         }
       }
@@ -33,7 +37,7 @@ export async function getHero() {
   const query = `
     query hero($id: String!) {
         contentstackHero(uid: { eq: $id }) {
-            id
+            slug: id
             title
             description
         }
