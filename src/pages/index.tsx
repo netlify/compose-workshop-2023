@@ -1,11 +1,28 @@
-import Hero from '../components/Hero';
-import ProductGrid from '../components/ProductGrid';
+import { useContext, useEffect } from 'react';
+
+import DataContext from '~/context/store';
+import Books from '~/components/Books';
+import Footer from '~/components/ui/Footer';
+import Hero from '~/components/Hero';
+import Merch from '~/components/Merch';
 
 export default function Home() {
+  const { books, fetchBooks, swag, fetchSwag } = useContext(DataContext);
+
+  useEffect(() => {
+    fetchBooks();
+    fetchSwag();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // @ts-expect-error window.geo comes from our edge function
+  const city = window.geo?.city;
   return (
-    <main className="max-w-full m-8">
+    <section>
       <Hero />
-      <ProductGrid />
-    </main>
+      <Merch city={city} items={swag} />
+      <Books books={books} />
+      <Footer />
+    </section>
   );
 }

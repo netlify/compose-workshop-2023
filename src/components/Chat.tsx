@@ -2,6 +2,8 @@ import { useChat } from 'ai/react';
 import { useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 
+import Button from '~/components/ui/Button';
+
 export default function Chat() {
   const {
     messages,
@@ -28,73 +30,57 @@ export default function Chat() {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const handleClear = () => {
+    setInput('');
+    setMessages([]);
+  };
+
   return (
-    <main className="bg-white md:rounded-lg md:shadow-md p-6 w-full h-screen flex flex-col">
-      <section className="overflow-y-auto flex-grow mb-4 pb-8">
+    <section>
+      <div className="py-8 w-full flex flex-col overflow-y-auto flex-grow mb-4 pb-8">
         <div className="flex flex-col space-y-4">
-          {messages.map(message =>
+          {messages.map((message, i) =>
             message.role === 'user' ? (
-              <div className="flex items-end justify-end">
-                <div className="bg-gray-300 border-gray-100 border-2 rounded-lg p-2 max-w-lg">
+              <div key={`message-${i}`} className="flex items-end justify-end">
+                <div className="bg-gray-700 text-white rounded-2xl p-4 max-w-prose">
                   <p>{message.content}</p>
                 </div>
               </div>
             ) : (
-              <div className="flex items-end">
-                <div className="markdown bg-gray-100 border-gray-300 border-2 rounded-lg p-2 mr-20 w-full">
+              <div key={`message-${i}`} className="flex items-end">
+                <div className="markdown bg-gray-100 rounded-2xl p-4 max-w-prose">
                   <ReactMarkdown children={message.content} />
                 </div>
               </div>
             )
           )}
         </div>
-        <div ref={bottomRef} />
-      </section>
-      <div className="flex items-center justify-center h-20">
-        {isLoading && (
-          <button
-            className="bg-gray-100 text-gray-900 py-2 px-4 my-8"
-            onClick={stop}
-          >
-            Stop generating
-          </button>
-        )}
+        <div ref={bottomRef} className="pb-40" />
       </div>
-      <section className="bg-gray-100 rounded-lg p-2">
+      <div className="bg-slate-900 fixed bottom-0 py-4 w-[calc(100%-60px)]">
         <form className="flex" onSubmit={handleSubmit}>
-          {messages.length > 1 && (
-            <button
-              className="bg-gray-100 text-gray-600 py-2 px-4 rounded-l-lg"
-              type="button"
-              onClick={e => {
-                e.preventDefault();
-                setInput('');
-                setMessages([]);
-              }}
-            >
-              Clear
-            </button>
-          )}
+          {messages.length > 1 && <Button onClick={handleClear}>Clear</Button>}
           <input
             autoFocus
             type="text"
             // ref={inputRef}
-            className="w-full rounded-l-lg p-2 outline-none"
-            placeholder={isLoading ? '...' : 'Type your message...'}
+            className="bg-gray-800 focus:outline-none focus:ring text-white w-full rounded-full px-6 py-2 mx-4"
+            placeholder={
+              isLoading
+                ? '...'
+                : 'What spooky story would you like to generate?'
+            }
             value={input}
             onChange={handleInputChange}
             disabled={isLoading}
           />
-          {!isLoading && (
-            <button
-              className="bg-blue-700 text-white font-bold py-2 px-4 rounded-r-lg"
-              type="submit"
-            >
-              Send
-            </button>
+          {isLoading ? (
+            <Button onClick={stop}>Stop</Button>
+          ) : (
+            <Button type="submit">Send</Button>
           )}
         </form>
-      </section>
-    </main>
+      </div>
+    </section>
   );
 }

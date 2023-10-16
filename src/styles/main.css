@@ -9,3 +9,8 @@ body {
 .markdown p:not(:last-of-type) {
   margin-bottom: 20px;
 }
+
+::selection {
+  background: red;
+  color: black;
+}

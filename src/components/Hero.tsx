@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
-import netlifyLogo from '../assets/netlify.svg';
-import { getHero } from '../graphql';
-
-import Card from './Card';
+import Card from '~/components/ui/Card';
+import { getHero } from '~/graphql';
 
 function Hero() {
   const [hero, setHero] = useState({});
@@ -17,11 +15,13 @@ function Hero() {
       });
   }, []);
   return (
-    <Card bg="gradient">
+    <Card type="orange">
       <div className="flex justify-center">
-        <img alt="Netlify logo" height={100} src={netlifyLogo} width={100} />
+        <span className="text-8xl">🎃</span>
       </div>
-      <h1 className="text-4xl font-extrabold text-white">{hero?.title}</h1>
+      <h1 className="text-4xl font-extrabold text-white drop-shadow-md">
+        {hero?.title}
+      </h1>
       <p className="text-xl text-white">{hero?.description}</p>
     </Card>
   );
