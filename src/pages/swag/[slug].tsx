@@ -15,6 +15,8 @@ export default function SwagPage() {
 
   const product = swag.find(s => s.slug === slug);
 
+  console.log(product)
+
   if (!product) {
     fetchSwag();
     return <Card type="loading" />;

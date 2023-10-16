@@ -1,5 +1,5 @@
-const CONNECT_API_URL = process.env.CONNECT_API_URL!;
-const API_TOKEN = process.env.CONNECT_API_AUTH_TOKEN!;
+const CONNECT_API_URL = import.meta.env.VITE_CONNECT_API_URL!;
+const API_TOKEN = import.meta.env.VITE_CONNECT_API_AUTH_TOKEN!;
 
 export async function getProducts() {
   const query = `

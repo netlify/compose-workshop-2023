@@ -29,12 +29,14 @@ function StoreProvider({ children }: Props) {
             title: string;
             image: { url: string };
             price: string;
+            description: string
           }) => {
             return {
               slug: r?.id,
               name: r?.title,
               imagePath: r?.image?.url,
               price: r?.price,
+              description: r?.description,
             };
           }
         )
