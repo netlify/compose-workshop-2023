@@ -14,6 +14,7 @@ function Swag() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // @ts-expect-error This comes from our geo edge function
   const city = window.geo?.city;
   return (
     <section>
