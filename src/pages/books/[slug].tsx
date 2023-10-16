@@ -22,7 +22,7 @@ export default function BookPage() {
 
   return (
     <section>
-      <Product name={book.title} {...book} />
+      <Product {...book} />
       <Button onClick={() => navigate('/')}>← Back</Button>
       <Footer />
     </section>
