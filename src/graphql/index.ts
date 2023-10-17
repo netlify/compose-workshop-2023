@@ -1,6 +1,7 @@
+import haversine from 'haversine';
+
 const CONNECT_API_URL = import.meta.env.VITE_CONNECT_API_URL!;
 const API_TOKEN = import.meta.env.VITE_CONNECT_API_AUTH_TOKEN!;
-const haversine = require('haversine');
 
 export async function getProducts() {
   const query = `
