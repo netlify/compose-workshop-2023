@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import StoreContext from '~/context/store';
+import { getProducts } from '~/graphql';
 import type { Book, Swag } from '~/types/interfaces';
 
 interface Props {
@@ -20,9 +21,26 @@ function StoreProvider({ children }: Props) {
 
   const fetchSwag = async () => {
     if (!swag.length) {
-      const response = await fetch('/api/swag');
-      const data = await response.json();
-      setSwag(data);
+      const response = await getProducts();
+      setSwag(
+        response.map(
+          (r: {
+            id: string;
+            title: string;
+            image: { url: string };
+            price: string;
+            description: string
+          }) => {
+            return {
+              slug: r?.id,
+              name: r?.title,
+              imagePath: r?.image?.url,
+              price: r?.price,
+              description: r?.description,
+            };
+          }
+        )
+      );
     }
   };
 

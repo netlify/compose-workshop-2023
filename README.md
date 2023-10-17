@@ -1,4 +1,4 @@
-# Netlify Compose 2023 Workshop
+# Netlify Compose Workshop 2023
 
 Welcome to Compose! In this workshop, you will learn how to create your first composable website with Netlify.
 
