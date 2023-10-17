@@ -1,8 +1,17 @@
 import BuyNow from '~/components/BuyNow';
 import Card from '~/components/ui/Card';
-import { ContentstackProduct } from '~/types/interfaces';
 
-export default function Product(props: ContentstackProduct) {
+interface Props {
+  author?: string;
+  description: string;
+  imagePath: string;
+  name?: string;
+  title?: string;
+  price: number;
+  stripe_price_id?: string;
+}
+
+export default function Product(props: Props) {
   const {
     author,
     description,

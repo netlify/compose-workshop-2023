@@ -24,7 +24,6 @@ export interface Swag {
 }
 
 export interface ContentstackProduct extends Swag {
-  author?: string;
   id: string;
   title: string;
   image: {
