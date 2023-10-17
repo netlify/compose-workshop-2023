@@ -29,22 +29,24 @@ In this workshop, you will learn how to:
 
 <details><summary>Step 0. Initial setup</summary>
 
-i. Fork this repo into your personal GitHub account
+i. [Fork this repo](https://github.com/netlify/compose-workshop-2023/fork) into either your personal account or one of your orgs, and ensure you copy all branches, not just `main`
 
-ii. Clone your fork, checkout starting branch
+ii. Install the [Netlify GitHub app](https://github.com/apps/netlify/installations/select_target) on your org or repo if you have not done so already
+
+iii. Clone your fork, and checkout the `start-here` branch
 
 ```bash
-$ git clone <FORK>
-$ git checkout start-here
+git clone <FORK_URL>
+git checkout start-here
 ```
 
-iii. Install dependencies
+iv. Install dependencies locally
 
 ```bash
 npm i
 ```
 
-iv. Download the latest version of `netlify-cli`
+v. Ensure you have the latest version of `netlify-cli` installed globally
 
 ```bash
 npm i netlify-cli -g
@@ -52,24 +54,25 @@ npm i netlify-cli -g
 
 </details>
 
-<details><summary>Step 1. Create a new site </summary>
+<details><summary>Step 1. Create a new site and run local dev server </summary>
 
-- Log into Netlify UI
-- Create a new site from a GitHub repo in UI
-- Team Overview → Import existing project
-- Rename site to something more memorable (UI)
+i. [Create a new site](https://app.netlify.com/start) from GitHub
+
+ii. Rename site to something more memorable in **Site configuration > Site details > Change site name**.
+
+iii. Log in to the CLI, link your repo to your site, and start local dev server
+
+```bash
+netlify login
+netlify link
+netlify dev
+```
 
 </details>
 
-<details><summary>Step 2. Local development</summary>
+<details><summary>Step 2. Function primitives</summary>
 
-- `netlify login`
-- `netlify link`
-- `netlify dev`
-
-</details>
-
-<details><summary>Step 3. Function primitives</summary>
+Our site is looking a little bare. Let's add some content! First we'll fetch a list of books that we happen to have as a [CSV file saved inside the /public directory](https://github.com/netlify/compose-workshop-2023/blob/main/public/books.csv).
 
 i. Add a getter and setter for books in `src/context/store.ts`
 
@@ -139,6 +142,8 @@ function StoreProvider({ children }: Props) {
 }
 ```
 
+That's nice, but we can only return all the books, when sometimes we only want one book at a time. Let's add a custom path with an optional slug in the API route.
+
 v. Export custom config to control method, route, etc in `netlify/functions/books.ts`
 
 ```typescript
@@ -190,30 +195,43 @@ if (slug) {
 
 </details>
 
-<details><summary>Step 4. Branches, CI/CD, and Deploy Previews</summary>
+<details><summary>Step 3. Branches, CI/CD, and Deploy Previews</summary>
 
-- Create a new branch
-- Push the branch, open pull request
-- Navigate to Deploy Preview
-- Netlify Drawer
-- Deploy logs
-- Build settings
-  - Function region selection
-- Function logs
+Create a new branch, commit changes, push the branch, and open a pull request
+
+```bash
+git checkout -b feat/bookshelf
+git add -A
+git commit -m "Adding a list of books to the home page"
+git push origin feat/bookshelf
+```
+
+You should see a link to the Deploy Preview as a comment by the Netlify bot on the pull request. Pushing to an open pull request [will kick off a new build](https://www.netlify.com/products/build/) in the Continuous Integration pipeline, and you can inspect the deploy logs as the build is building and deploying.
+
+In addition to deploy logs, the Netlify UI gives you access to function logs as well. You can change the region a function executes by changing the region selector in **Site configuration > Build & deploy > Functions**.
+
+In the Deploy Preview itself, you'll notice a floating toolbar anchored to the bottom of your screen. This is the [Netlify Drawer](https://www.netlify.com/products/deploy-previews/). You and your teammates can use this to leave feedback to each other about the Deploy Preview. Any comments you make will sync back to the pull request on GitHub (or any Git service that you may use). 
 
 </details>
 
-<details><summary>Step 5. Headers and redirects</summary>
+<details><summary>Step 4. Headers and redirects</summary>
 
-- Redirects
+You'll notice that when you refresh a page on the `/books/{slug}` route, the site 404s. Why is that? Since this frontend stack utilizes React as an SPA (Single Page Application), there is only one single HTML file (`/index.html`) inside of the deploy, and routing is managed exclusively by JavaScript referenced in that file. We'll need to add a [redirect](https://docs.netlify.com/routing/redirects/rewrites-proxies/#history-pushstate-and-single-page-apps) that routes 404s to `/index.html`.
+
+Inside your publish directory (for this repo, `/public`), add a `_redirects` file that contains the following: 
+
+```
+/*  /index.html  200
+```
+
 - Headers
 - netlify.toml
 
 </details>
 
-<details><summary>Step 6. Advanced fine-grained cache control</summary>
+<details><summary>Step 5. Advanced fine-grained cache control</summary>
 
-ix. Set fine-grained cache-control headers before fetching in `netlify/functions/books.ts`
+i. Set fine-grained cache-control headers before fetching in `netlify/functions/books.ts`
 
 ```typescript
 const etag = createHash('md5')
@@ -232,22 +250,120 @@ if (req.headers.get('if-none-match') === etag) {
 }
 ```
 
-</details>
+ii. Purge cache of specific tags using an API call
 
-<details><summary>Step 7. Edge Functions and personalization</summary>
-
-- Edge functions as middleware for the CDN
-- Personalization with `context.geo` (merch.ts)
+```
+```
 
 </details>
 
-<details><summary>Step 8. Environment variables</summary>
+<details><summary>Step 6. Edge Functions and personalization</summary>
 
-- Streaming API responses
+We're going to make a swag section of the site that is personalized to the user based on their geolocation. Edge functions act as middleware for the CDN.
+
+i. Add the Swag component to the home page in `src/pages/index.tsx`
+
+```diff
+import Bookshelf from '~/components/Bookshelf';
+import Footer from '~/components/ui/Footer';
+import Hero from '~/components/Hero';
++import Swag from '~/components/Swag';
+
+export default function Home() {
+  return (
+    <section>
+      <Hero />
++     <Swag />
+      <Bookshelf />
+      <Footer />
+    </section>
+  );
+}
+```
+
+ii. Fetch the swag in `netlify/context/DataProvider.tsx`
+
+```typescript
+const fetchSwag = async () => {
+  if (!swag.length) {
+    const response = await fetch('/api/swag');
+    const data = await response.json();
+    setSwag(data);
+  }
+};
+```
+
+iii. Sort items ascending based on distance to user in `netlify/functions/swag.ts`
+
+```diff
+import { Config, Context } from '@netlify/functions'
++import haversine from 'haversine';
+
+-export default async (req: Request) => {
++export default async (req: Request, context: Context) => {
+   // ...
++  const hasGeo = context.geo?.latitude && context.geo?.longitude;
+-  const items = selectRandomItems(merchandise, ITEMS_COUNT);
++  const items = hasGeo
++    ? merchandise
++        .sort(
++          (a, b) =>
++            haversine(a.location, context.geo) -
++            haversine(b.location, context.geo)
++        )
++        .slice(0, ITEMS_COUNT)
++    : selectRandomItems(merchandise, ITEMS_COUNT);
+
+  return Response.json(items);
+};
+```
+
+iv. Rewrite response bodies to contain geolocation data in `netlify/edge-functions/geo.ts`
+
+```typescript
+import { Config, Context } from '@netlify/edge-functions';
+
+export default async (request: Request, context: Context) => {
+  const response = await context.next();
+  response.headers.set('x-custom-header', 'invoked');
+
+  // html GETs only
+  const isGET = request.method?.toUpperCase() === 'GET';
+  const isHTMLResponse = response.headers
+    .get('content-type')
+    ?.startsWith('text/html');
+  if (!isGET || !isHTMLResponse) {
+    return response;
+  }
+
+  const body = await response.text();
+  const transformedBody = body.replace(
+    'window.geo = {}',
+    `window.geo = ${JSON.stringify(context.geo)}`
+  );
+
+  return new Response(transformedBody, response);
+};
+
+export const config: Config = {
+  path: '/*',
+  excludedPath: '/(api|assets|images)/*',
+};
+```
 
 </details>
 
-<details><summary>Step 9. Building a content-driven app</summary>
+<details><summary>Step 7. Environment variables</summary>
+
+We're going to use environment variables
+
+```bash
+netlify env:set OPENAI_KEY <YOUR_VALUE> --scope functions
+```
+
+</details>
+
+<details><summary>Step 8. Building a content-driven app</summary>
 
 - Replace merch products with Contentstack
 - Add to About page with Storyblok content
@@ -255,7 +371,7 @@ if (req.headers.get('if-none-match') === etag) {
 
 </details>
 
-<details><summary>Step 10. Utilizing existing custom data sources</summary>
+<details><summary>Step 9. Utilizing existing custom data sources</summary>
 
 - Turning CSV into data model
 - Replace books CSV with AWS S3 connector
@@ -263,11 +379,27 @@ if (req.headers.get('if-none-match') === etag) {
 
 </details>
 
-<details><summary>Step 11. Bonus features of the Netlify platform</summary>
+<details><summary>Step 10. Bonus features of the Netlify platform</summary>
 
-- Site protections
-- Analytics, RUM
-- Log Drains
-- Slack notifications
+Congrats! You just built a composable website. If we have time, we'll walk through some additional features that you might not know about the Netlify platform. 
+
+- [Site protections](https://docs.netlify.com/security/secure-access-to-sites/site-protection/)
+- [Analytics](https://docs.netlify.com/monitor-sites/site-analytics/), [Real User Metrics](https://docs.netlify.com/monitor-sites/real-user-metrics/)
+- [Log Drains](https://docs.netlify.com/monitor-sites/log-drains/)
+- [Slack notifications](https://docs.netlify.com/integrations/slack-app/)
 
 </details>
+
+
+## Recent Enterprise-focused resources from our blog
+
+Read these recent blog posts focused on Enterprise releases, features,  and use cases.
+
+- Oct 13 2023: [Cache-tags & Purge API](https://www.netlify.com/blog/cache-tags-and-purge-api-on-netlify/)
+- Oct 12 2023: [Introducing Netlify Functions 2.0](https://www.netlify.com/blog/introducing-netlify-functions-2-0/)
+- Sep 28 2023: [Stale-while-revalidate & fine-grained cache control](https://www.netlify.com/blog/swr-and-fine-grained-cache-control/)
+- Sep 13 2023: [General Availability of Netlify Software Development Kit (SDK)](https://www.netlify.com/blog/general-availability-netlify-sdk-software-development-kit/)
+- Aug 29 2023: [Elevating enterprise deployment with enhanced monorepo experience](https://www.netlify.com/blog/elevating-enterprise-deployment-introducing-an-enhanced-monorepo-experience-on-netlify/)
+- Aug 24 2023: [How I learned to stop worrying and love the Content Security Policy](https://www.netlify.com/blog/general-availability-content-security-policy-csp-nonce-integration/)
+- Aug 23 2023: [IP and Geo Restrictions for WAF Security](https://www.netlify.com/blog/general-availability-web-application-firewall-traffic-rules/)
+- Aug 22 2023: [Secrets Controller: Proactive security for secret keys](https://www.netlify.com/blog/general-availability-secrets-controller/)
