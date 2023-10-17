@@ -95,7 +95,7 @@ export default function About() {
             Clone the{' '}
             <Link
               className={linkStyles}
-              to="https://github.com/netlify/workshop_first-composable-project"
+              to="https://github.com/netlify/compose-workshop-2023"
             >
               workshop GitHub repo
             </Link>{' '}

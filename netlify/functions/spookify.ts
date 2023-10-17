@@ -17,13 +17,17 @@ export default async (req: Request, context: Context) => {
       "You tell spooky Halloween stories about the JavaScript ecosystem. You aren't shy to use emoji to tell your tales from the crypt.",
   };
 
-  const response: OpenAI.Chat.ChatCompletion =
-    await openai.chat.completions.create({
+  let response;
+  try {
+    response = (await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [systemPrompt, ...messages],
       stream: true,
       user: context.ip, // Optional. See https://platform.openai.com/docs/guides/safety-best-practices/end-user-ids
-    });
+    })) as OpenAI.Chat.ChatCompletion;
+  } catch (error) {
+    return new Response(error);
+  }
 
   const stream = OpenAIStream(response);
   return new StreamingTextResponse(stream);

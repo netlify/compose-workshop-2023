@@ -2,9 +2,16 @@ import { createContext } from 'react';
 
 import type { Book, Swag } from '~/types/interfaces';
 
-const StoreContext = createContext({
-  books: [] as Book[],
-  swag: [] as Swag[],
+type Store = {
+  books: Book[];
+  swag: Swag[];
+  fetchBooks: (slug?: string) => void;
+  fetchSwag: () => void;
+};
+
+const StoreContext = createContext<Store>({
+  books: [],
+  swag: [],
   fetchBooks: () => {},
   fetchSwag: () => {},
 });
