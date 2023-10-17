@@ -381,9 +381,95 @@ netlify env:set OPENAI_KEY <YOUR_VALUE> --scope functions
 
 <details><summary>Step 8. Building a content-driven app</summary>
 
-- Replace merch products with Contentstack
-- Add to About page with Storyblok content
-- ...
+i. Create a new Connect data layer in **Connect > Add a new data layer**. Then, in **Data layer settings**, save the API URL as the `VITE_CONNECT_API_URL` environment variable.
+
+ii. Create a new Connect API token in **Data layer settings > API tokens**. Save this as the `VITE_CONNECT_API_AUTH_TOKEN` environment variable.
+
+iii. Create new data sources for Contentstack and Storyblok in **Data layer settings > Data sources**.
+
+iv. Replace swag products with data from Contentstack in `src/context/DataProvider.tsx`
+
+```diff
++import { getProducts } from '~/graphql';
+-import type { Book, Swag } from '~/types/interfaces';
++import type { Book, Swag, ContentstackProduct } from '~/types/interfaces';
+
+// ...
+
+const fetchSwag = async () => {
+  if (!swag.length) {
+-   const response = await fetch('/api/swag');
+-   const data = await response.json();
+-   setSwag(data);
++   const response = await getProducts();
++   const products = response.map((product: ContentstackProduct) => {
++     return {
++       ...product,
++       imagePath: product?.image?.url,
++       name: product?.title,
++       slug: product?.id,
++     };
++   });
++   setSwag(products);
+  }
+};
+```
+
+v. Fetch About page content from Storyblok in `src/pages/about.tsx`
+
+```diff
++import { getAbout } from '~/graphql';
++import type { AboutPage } from '~/types/interfaces';
+
+export default function About() {
++ const [aboutData, setAboutData] = useState<AboutPage>();
+
++ useEffect(() => {
++   getAbout()
++     .then(data => {
++       const content = JSON.parse(data?.content);
++       setAboutData({
++         ...data,
++         content,
++       });
++     })
++     .catch(error => console.error(error));
++ }, []);
+
++ if (!aboutData) {
++   return null;
++ }
+
++ const titleSplit = aboutData.content?.title?.split('Netlify Compose 2023');
+  const linkStyles = 'text-[#30e6e2] hover:underline hover:text-[#defffe]';
+  return (
+```
+
+vi. Replace hardcoded images with dynamic image content from Storyblok in `src/pages/about.tsx`
+
+```diff
+-  src={netlifyLogo}
++  src={aboutData.content?.headerImage?.filename}
+// ...
+-  src={composeLogo}
++  src={aboutData.content?.subHeaderImage?.filename}
+// ...
+-  src={netlifyMonogram}
++  src={aboutData.content?.footerImage?.filename}
+```
+
+vii. Replace hardcoded list items with dynamic list from Storyblok in `src/pages/about.tsx`
+
+```diff
+<ul className="mt-8 list-disc pl-5">
+-  <li>...</li>
+-  // ...
++  {aboutData.content?.body?.map(
++    ({ items }) =>
++      items?.map(i => <li key={i._uid}>{i.itemValue}</li>)
++  )}
+</ul>
+```
 
 </details>
 
