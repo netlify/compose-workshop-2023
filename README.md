@@ -1,4 +1,4 @@
-# Netlify Compose Workshop 2023
+# Netlify Compose 2023 Workshop
 
 Welcome to Compose! In this workshop, you will learn how to create your first composable website with Netlify.
 
@@ -29,10 +29,26 @@ In this workshop, you will learn how to:
 
 <details><summary>Step 0. Initial setup</summary>
 
-- Clone repo
-- Checkout base branch
-- Install dependencies
-- Download the latest version of `netlify-cli`
+i. Fork this repo into your personal GitHub account
+
+ii. Clone your fork, checkout starting branch
+
+```bash
+$ git clone <FORK>
+$ git checkout start-here
+```
+
+iii. Install dependencies
+
+```bash
+npm i
+```
+
+iv. Download the latest version of `netlify-cli`
+
+```bash
+npm i netlify-cli -g
+```
 
 </details>
 
