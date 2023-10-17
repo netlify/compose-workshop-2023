@@ -11,12 +11,12 @@ export default function BookPage() {
   const { books, fetchBooks } = useContext(DataContext);
 
   const navigate = useNavigate();
-  const { slug } = useParams('/books/:slug');
+  const { id } = useParams('/books/:id');
 
-  const book = books.find(b => b.slug === slug);
+  const book = books.find(b => b.id === id);
 
   if (!book) {
-    fetchBooks(slug);
+    fetchBooks(id);
     return <Card type="loading" />;
   }
 

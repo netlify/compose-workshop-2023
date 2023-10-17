@@ -20,7 +20,7 @@ function Bookshelf() {
           <Link
             key={book.isbn}
             className="max-w-[calc(25%-24px)] hover:scale-105 transition-transform duration-300"
-            to={`/books/${book.slug}`}
+            to={`/books/${book.id}`}
           >
             <img
               className="aspect-square drop-shadow rounded-lg"
