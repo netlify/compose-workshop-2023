@@ -27,7 +27,7 @@ export default function Product(props: Props) {
         <img
           className="aspect-square drop-shadow rounded-lg"
           height={400}
-          src={imagePath?.replace('"', '').replace('"', '')}
+          src={imagePath}
           width={400}
         />
         <div className="text-left ml-8">
