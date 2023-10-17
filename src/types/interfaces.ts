@@ -1,24 +1,33 @@
 export interface Book {
   author: string;
   description: string;
+  id: string;
   imagePath: string;
   isbn: string;
   price: number;
-  id: string;
   title: string;
 }
 
 export interface Swag {
   description: string;
   imagePath: string;
-  name: string;
-  price: number;
-  stripe_price_id: string;
-  rating: number;
-  sku: string;
-  slug: string;
   location: {
     latitude: number;
     longitude: number;
   };
+  name: string;
+  price: number;
+  rating: number;
+  sku: string;
+  slug: string;
+  stripe_price_id?: string;
+}
+
+export interface ContentstackProduct extends Swag {
+  id: string;
+  title: string;
+  image: {
+    url: string;
+  };
+  stripe_price_id: string;
 }

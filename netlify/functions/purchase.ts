@@ -1,12 +1,13 @@
-import { Config, Context } from '@netlify/functions';
+import { Config } from '@netlify/functions';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_BACKEND_SECRET!, {
-  apiVersion: '2023-10-16',
-});
+const { STRIPE_BACKEND_SECRET } = process.env;
 
-export default async (req: Request, context: Context) => {
+const stripe = new Stripe(STRIPE_BACKEND_SECRET, { apiVersion: '2023-10-16' });
+
+export default async (req: Request) => {
   const body = await req.json();
+  const { origin } = new URL(req.url);
 
   // Create Stripe session.
   const session = await stripe.checkout.sessions.create({
@@ -14,8 +15,8 @@ export default async (req: Request, context: Context) => {
     line_items: [{ price: body.priceId, quantity: 1 }],
     mode: 'payment',
     // Redirect to confirmation URL.
-    success_url: `${process.env.APP_HOSTNAME}/confirmation?paymentStatus=success`,
-    cancel_url: `${process.env.APP_HOSTNAME}`,
+    success_url: `${origin}/confirmation?paymentStatus=success`,
+    cancel_url: origin,
   });
 
   return Response.json({ id: session.id, url: session.url });
@@ -23,5 +24,5 @@ export default async (req: Request, context: Context) => {
 
 export const config: Config = {
   method: 'POST',
-  path: '/api/purchase-session',
+  path: '/api/purchase',
 };
