@@ -25,7 +25,7 @@ function Bookshelf() {
             <img
               className="aspect-square drop-shadow rounded-lg"
               loading="lazy"
-              src={book.imagePath?.replace('"', '').replace('"', '')}
+              src={book.imagePath}
             />
           </Link>
         ))}
