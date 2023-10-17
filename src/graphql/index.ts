@@ -1,5 +1,6 @@
 const CONNECT_API_URL = import.meta.env.VITE_CONNECT_API_URL!;
 const API_TOKEN = import.meta.env.VITE_CONNECT_API_AUTH_TOKEN!;
+const haversine = require('haversine');
 
 export async function getProducts() {
   const query = `
@@ -15,6 +16,10 @@ export async function getProducts() {
             rating
             stripe_price_id
             title
+            location {
+              lat
+              long
+            }
           }
         }
       }
@@ -30,7 +35,17 @@ export async function getProducts() {
   });
 
   const result = await response.json();
-  return result?.data?.allContentstackProduct?.nodes;
+
+  const products = result?.data?.allContentstackProduct?.nodes;
+
+  const geo = (window as any)?.geo;
+
+  return geo
+    ? products.sort(
+        (a: any, b: any) =>
+          haversine(a.location, geo) - haversine(b.location, geo)
+      )
+    : products;
 }
 
 export async function getBooks() {
