@@ -31,6 +31,8 @@ In this workshop, you will learn how to:
 
 i. [Fork this repo](https://github.com/netlify/compose-workshop-2023/fork) into your personal account, and uncheck the `Copy the main branch only` checkbox, so that you copy all branches and not just `main`
 
+![Copy all branches](media/copy-all-branches.png)
+
 ii. Install the [Netlify GitHub app](https://github.com/apps/netlify/installations/select_target) on your org or repo if you have not done so already
 
 iii. Clone your fork, and checkout the `start-here` branch
@@ -53,17 +55,19 @@ npm i netlify-cli -g
 netlify --version
 ```
 
+💡 Learn more about the [Netlify CLI](https://docs.netlify.com/cli/get-started/) in our docs.
+
 </details>
 
 <details><summary>Step 1. Create a new site and run local dev server </summary>
 
 i. [Create a new site](https://app.netlify.com/start) by going to **Team overview > Add new site > Import an existing project**. Click the Deploy with GitHub button. After you authenticate, search for your fork. For the `Branch to deploy` field, be sure to select `start-here` as your default production branch. You can keep the auto-populated values for all other fields. Click the Deploy button to deploy your site. 
 
-![](media/branch-to-deploy.png)
+![Deploy your project](media/branch-to-deploy.png)
 
 ii. Rename site to something more memorable in **Site configuration > Site details > Change site name**.
 
-![](media/change-site-name.png)
+![Change site name](media/change-site-name.png)
 
 iii. Log in to the CLI, link your repo to your site, and start local dev server
 
@@ -72,6 +76,8 @@ netlify login
 netlify link
 netlify dev
 ```
+
+💡 Learn more about [getting started](https://docs.netlify.com/get-started/) in our docs.
 
 </details>
 
@@ -189,6 +195,8 @@ if (slug) {
 }
 ```
 
+💡 Learn more about [Functions](https://docs.netlify.com/functions/overview/) in our docs.
+
 </details>
 
 <details><summary>Step 3. Branches, CI/CD, and Deploy Previews</summary>
@@ -208,6 +216,17 @@ In addition to deploy logs, the Netlify UI gives you access to function logs as 
 
 In the Deploy Preview itself, you'll notice a floating toolbar anchored to the bottom of your screen. This is the [Netlify Drawer](https://www.netlify.com/products/deploy-previews/). You and your teammates can use this to leave feedback to each other about the Deploy Preview. Any comments you make will sync back to the pull request on GitHub (or any Git service that you may use). 
 
+Back in the pull request, merge to main. This will kick off a production build. Every deploy is [atomic](https://jamstack.org/glossary/atomic/) and [immutable](https://jamstack.org/glossary/immutable/), which makes [instant rollbacks](https://docs.netlify.com/site-deploys/manage-deploys/#rollbacks) a breeze.
+
+In your local repo, sync up with the changes from main again: 
+
+```bash
+git checkout main
+git pull origin main
+```
+
+💡 Learn more about [Git workflows](https://docs.netlify.com/git/overview/) and [site deploys](https://docs.netlify.com/site-deploys/overview/) in our docs.
+
 </details>
 
 <details><summary>Step 4. Headers and redirects</summary>
@@ -220,8 +239,32 @@ Inside your publish directory (for this repo, `/public`), add a `_redirects` fil
 /*  /index.html  200
 ```
 
-- Headers
-- netlify.toml
+For every fallthrough case (i.e. whenever a route is accessed and there isn't a file match), it will now redirect back to `/index.html`, where `react-router` will route accordingly.
+
+Similar to the `_redirects` file is the `_headers` file. Here you can set custom headers for routes of your choosing. Create a `/public/_headers` file, and save the following: 
+
+```
+/* 
+  X-Frame-Options: SAMEORIGIN
+```
+
+This will prevent your site from being loaded in an iframe, a technique that help your site prevent [clickjacking](https://en.wikipedia.org/wiki/Clickjacking) attacks. 
+
+You can also configure both redirects and headers inside the `/netlify.toml` file. Here is the `netlify.toml` equivalents of the above: 
+
+```
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+```
+
+💡 Learn more about [redirects](https://docs.netlify.com/routing/redirects/) and [custom headers](https://docs.netlify.com/routing/headers/) in our docs.
 
 </details>
 
@@ -265,8 +308,14 @@ if (slug) {
 
 iii. Purge cache of specific tags using an API call
 
+```bash
+curl -X POST 'https://api.netlify.com/api/v1/purge' \
+  -H 'Authorization: Bearer <token>' \
+  -H 'Content-Type: application/json' \
+  -d '{"site_id":"$SITE_ID","cache_tags":["books"]}'
 ```
-```
+
+💡 Learn more about [caching](https://docs.netlify.com/platform/caching/) in our docs.
 
 </details>
 
@@ -367,15 +416,25 @@ export const config: Config = {
 };
 ```
 
+💡 Learn more about [Edge Functions](https://docs.netlify.com/edge-functions/overview/) in our docs.
+
 </details>
 
 <details><summary>Step 7. Environment variables</summary>
 
-We're going to use environment variables
+You can manage environment variables in the UI and CLI. 
+
+Go to **Site configuration > Environment variables** to add site-specific env vars to your site. 
+
+![Environment variables form](media/env-var-form.png)
+
+In the CLI, enter the following command to create an environment variable that is scoped to the Functions runtime: 
 
 ```bash
 netlify env:set OPENAI_KEY <YOUR_VALUE> --scope functions
 ```
+
+💡 Learn more about [environment variables](https://docs.netlify.com/environment-variables/overview/) in our docs.
 
 </details>
 
@@ -471,13 +530,13 @@ vii. Replace hardcoded list items with dynamic list from Storyblok in `src/pages
 </ul>
 ```
 
+💡 Learn more about [Netlify Connect](https://docs.netlify.com/connect/overview/) in our docs.
+
 </details>
 
 <details><summary>Step 9. Utilizing existing custom data sources</summary>
 
-- Turning CSV into data model
-- Replace books CSV with AWS S3 connector
-- ...
+Follow the instructions in the [Dynamic CMS Connector repo](https://github.com/netlify/workshop_mock-cms-connector)!
 
 </details>
 
