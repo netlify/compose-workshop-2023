@@ -1,5 +1,9 @@
 import { Config, Context } from '@netlify/functions';
-const stripe = require('stripe')(process.env.STRIPE_BACKEND_SECRET);
+import Stripe from 'stripe';
+
+const stripe = new Stripe(process.env.STRIPE_BACKEND_SECRET!, {
+  apiVersion: '2023-10-16',
+});
 
 export default async (req: Request, context: Context) => {
   const body = await req.json();
