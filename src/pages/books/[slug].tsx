@@ -16,7 +16,7 @@ export default function BookPage() {
   const book = books.find(b => b.slug === slug);
 
   if (!book) {
-    fetchBooks();
+    fetchBooks(slug);
     return <Card type="loading" />;
   }
 

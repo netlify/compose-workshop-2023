@@ -10,11 +10,11 @@ function StoreProvider({ children }: Props) {
   const [books, setBooks] = useState<Book[]>([]);
   const [swag, setSwag] = useState<Swag[]>([]);
 
-  const fetchBooks = async (id: string = '') => {
-    if (!books.length) {
-      const response = await fetch(`/api/books/${id}`);
+  const fetchBooks = async (slug: string = '') => {
+    if (books.length <= 1) {
+      const response = await fetch(`/api/books/${slug}`);
       const data = await response.json();
-      setBooks(data);
+      setBooks(Array.isArray(data) ? data : [data]);
     }
   };
 

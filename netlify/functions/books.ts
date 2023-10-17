@@ -5,10 +5,11 @@ import { Config, Context } from '@netlify/functions';
 // const sleep = async (ms: number) => await new Promise(fn => setTimeout(fn, ms));
 
 export default async (req: Request, context: Context) => {
-  const { id } = context.params;
+  const { slug } = context.params;
+  console.log(`Looking up ${slug || 'all books'}...`);
 
   const etag = createHash('md5')
-    .update(id || 'all')
+    .update(slug || 'all')
     .digest('hex');
 
   const headers = {
@@ -19,32 +20,26 @@ export default async (req: Request, context: Context) => {
   };
 
   if (req.headers.get('if-none-match') === etag) {
-    console.log('Browser cache hit!', id || 'all');
     return new Response('Not modified', { status: 304, headers });
   }
-
-  console.log('Browser cache miss', id || 'all');
-
-  // simulate latency
-  // await sleep(5000);
 
   const { origin } = new URL(req.url);
   const response = await fetch(`${origin}/books.csv`);
   const csvContent = await response.text();
-  let json = await csv().fromString(csvContent);
+  const books = await csv().fromString(csvContent);
 
-  if (id) {
-    const book = json.find(b => b.id === id);
+  if (slug) {
+    const book = books.find(b => b.slug === slug);
     if (!book) {
       return new Response('Not found', { status: 404, headers });
     }
-    json = book;
+    return Response.json(book, { headers });
   }
 
-  return Response.json(json, { headers });
+  return Response.json(books, { headers });
 };
 
 export const config: Config = {
   method: 'GET',
-  path: '/api/books{/:id}?', // https://developer.mozilla.org/en-US/docs/Web/API/URL_Pattern_API
+  path: '/api/books{/:slug}?', // https://developer.mozilla.org/en-US/docs/Web/API/URL_Pattern_API
 };
