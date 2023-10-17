@@ -2,8 +2,7 @@ import { Config, Context } from '@netlify/functions';
 import { OpenAIStream, StreamingTextResponse } from 'ai';
 import OpenAI from 'openai';
 
-const { OPENAI_KEY } = process.env;
-const openai = new OpenAI({ apiKey: OPENAI_KEY });
+const openai = new OpenAI({ apiKey: 'REPLACE_ME' });
 
 export default async (req: Request, context: Context) => {
   const { messages } = await req.json();

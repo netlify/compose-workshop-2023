@@ -1,5 +1,4 @@
-import { Config, Context } from '@netlify/functions';
-import haversine from 'haversine';
+import { Config } from '@netlify/functions';
 
 const ITEMS_COUNT = 3;
 
@@ -10,21 +9,12 @@ function selectRandomItems(arr, n: number) {
     .slice(0, n); // Get the first n items
 }
 
-export default async (req: Request, context: Context) => {
+export default async (req: Request) => {
   const { origin } = new URL(req.url);
   const response = await fetch(`${origin}/swag.json`);
   const { merchandise } = await response.json();
 
-  const hasGeo = context.geo?.latitude && context.geo?.longitude;
-  const items = hasGeo
-    ? merchandise
-        .sort(
-          (a, b) =>
-            haversine(a.location, context.geo) -
-            haversine(b.location, context.geo)
-        )
-        .slice(0, ITEMS_COUNT)
-    : selectRandomItems(merchandise, ITEMS_COUNT);
+  const items = selectRandomItems(merchandise, ITEMS_COUNT);
 
   return Response.json(items);
 };
