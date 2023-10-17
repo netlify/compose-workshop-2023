@@ -1,6 +1,3 @@
-'use client';
-
-import Button from '~/components/ui/Button';
 import Card from '~/components/ui/Card';
 import BuyNow from './BuyNow';
 
@@ -11,7 +8,7 @@ interface Props {
   name?: string;
   title?: string;
   price: number;
-  stripe_price_id: string;
+  stripe_price_id?: string;
 }
 
 export default function Product(props: Props) {
@@ -45,7 +42,7 @@ export default function Product(props: Props) {
                 ${price}
               </p>
 
-              <BuyNow priceId={stripe_price_id} />
+              {stripe_price_id && <BuyNow priceId={stripe_price_id} />}
             </>
           )}
         </div>

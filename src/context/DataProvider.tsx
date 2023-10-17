@@ -11,7 +11,7 @@ function StoreProvider({ children }: Props) {
   const [books, setBooks] = useState<Book[]>([]);
   const [swag, setSwag] = useState<Swag[]>([]);
 
-  const fetchBooks = async (id: string = '') => {
+  const fetchBooks = async () => {
     if (!books.length) {
       const response = await getBooks();
       setBooks(response);
