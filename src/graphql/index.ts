@@ -33,29 +33,6 @@ export async function getProducts() {
   return result?.data?.allContentstackProduct?.nodes;
 }
 
-export async function getAbout() {
-  const query = `
-    query about {
-        storyblokEntry(full_slug: { eq: "about" }) {
-          content
-          id
-        }
-      }
-    `;
-
-  const response = await fetch(CONNECT_API_URL, {
-    method: `POST`,
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${API_TOKEN}`,
-    },
-    body: JSON.stringify({ query }),
-  });
-
-  const result = await response.json();
-  return result?.data?.storyblokEntry;
-}
-
 export async function getBooks() {
   const query = `
     query books {
@@ -85,13 +62,12 @@ export async function getBooks() {
   return result?.data?.allSpookyBook?.nodes;
 }
 
-export async function getHero() {
+export async function getAbout() {
   const query = `
-    query hero($id: String!) {
-        contentstackHero(uid: { eq: $id }) {
-          description
+    query about {
+        storyblokEntry(full_slug: { eq: "about" }) {
+          content
           id
-          title
         }
       }
     `;
@@ -102,9 +78,9 @@ export async function getHero() {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${API_TOKEN}`,
     },
-    body: JSON.stringify({ query, variables: { id: 'blt42848774b8918f80' } }),
+    body: JSON.stringify({ query }),
   });
 
   const result = await response.json();
-  return result?.data?.contentstackHero;
+  return result?.data?.storyblokEntry;
 }
