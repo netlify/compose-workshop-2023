@@ -79,26 +79,7 @@ netlify dev
 
 Our site is looking a little bare. Let's add some content! First we'll fetch a list of books that we happen to have as a [CSV file saved inside the /public directory](https://github.com/netlify/compose-workshop-2023/blob/main/public/books.csv).
 
-i. Add a getter and setter for books in `src/context/store.ts`
-
-```diff
-import { createContext } from 'react';
-+import type { Book } from '~/types/interfaces';
-
-type Store = {
-+  books: Book[];
-+  fetchBooks: (slug?: string) => void;
-};
-
-const StoreContext = createContext<Store>({
-+  books: [],
-+  fetchBooks: () => {},
-});
-
-export default StoreContext;
-```
-
-ii. Add the `Bookshelf` component to `src/pages/index.tsx`
+i. Add the `Bookshelf` component to `src/pages/index.tsx`
 
 ```diff
 +import Bookshelf from '~/components/Bookshelf';
@@ -116,7 +97,7 @@ export default function Home() {
 }
 ```
 
-iii. Return data from a CSV in an API response in `netlify/functions/books.ts`
+ii. Return data from a CSV in an API response in `netlify/functions/books.ts`
 
 ```typescript
 import csv from 'csvtojson';
@@ -125,17 +106,24 @@ export default async (req: Request) => {
   const { origin } = new URL(req.url);
   const response = await fetch(`${origin}/books.csv`);
   const csvContent = await response.text();
-  const json = await csv().fromString(csvContent);
+  const books = await csv().fromString(csvContent);
   
-  return Response.json(json);
+  return Response.json(books);
 };
 ```
 
-iv. Fetch from the function in `src/context/DataProvider.tsx`
+💡 Invoke your function from the CLI:
+
+```
+netlify functions:invoke books
+```
+
+iii. Fetch from the function in `src/context/DataProvider.tsx`
 
 ```diff
 function StoreProvider({ children }: Props) {
-  const [books, setBooks] = useState<Book[]>([]);
+- const books = [] as Book[];
++ const [books, setBooks] = useState<Book[]>([]);
 
   const fetchBooks = async () => {
 +   if (!books.length) {
@@ -149,7 +137,7 @@ function StoreProvider({ children }: Props) {
 
 That's nice, but we can only return all the books, when sometimes we only want one book at a time. Let's add a custom path with an optional slug in the API route.
 
-v. Export custom config to control method, route, etc in `netlify/functions/books.ts`
+iv. Export custom config to control method, route, etc in `netlify/functions/books.ts`
 
 ```typescript
 export const config: Config = {
@@ -158,7 +146,10 @@ export const config: Config = {
 };
 ```
 
-vi. Change your clientside API call to new route in `src/context/DataProvider.tsx`
+💡 The `path` parameter follows the [URL Pattern API](https://developer.mozilla.org/en-US/docs/Web/API/URL_Pattern_API) spec.
+
+
+v. Change your clientside API call to new route in `src/context/DataProvider.tsx`
 
 ```diff
 -  const fetchBooks = async () => {
@@ -177,7 +168,7 @@ vi. Change your clientside API call to new route in `src/context/DataProvider.ts
 +  };
 ```
 
-vii. Extract and log the slug from the URL params in `netlify/functions/books.ts`
+vi. Extract and log the slug from the URL params in `netlify/functions/books.ts`
 
 ```diff
 -export default async (req: Request) => {
@@ -186,15 +177,15 @@ vii. Extract and log the slug from the URL params in `netlify/functions/books.ts
 +  console.log(`Looking up ${slug || 'all books'}...`);
 ```
 
-viii. Return a single book if the slug is present before the last return statement
+vii. Return a single book if the slug is present before the last return statement
 
 ```typescript
 if (slug) {
   const book = books.find(b => b.slug === slug);
   if (!book) {
-    return new Response('Not found', { status: 404, headers });
+    return new Response('Not found', { status: 404 });
   }
-  return Response.json(book, { headers });
+  return Response.json(book);
 }
 ```
 
@@ -255,7 +246,24 @@ if (req.headers.get('if-none-match') === etag) {
 }
 ```
 
-ii. Purge cache of specific tags using an API call
+ii. Return headers on all Response objects
+
+```diff
+if (slug) {
+  const book = books.find(b => b.slug === slug);
+  if (!book) {
+-   return new Response('Not found', { status: 404 });
++   return new Response('Not found', { status: 404, headers });
+  }
+- return Response.json(book);
++ return Response.json(book, { headers });
+}
+
+-return Response.json(books);
++return Response.json(books, { headers });
+```
+
+iii. Purge cache of specific tags using an API call
 
 ```
 ```
@@ -264,7 +272,7 @@ ii. Purge cache of specific tags using an API call
 
 <details><summary>Step 6. Edge Functions and personalization</summary>
 
-We're going to make a swag section of the site that is personalized to the user based on their geolocation. Edge functions act as middleware for the CDN.
+We're going to make a swag section of the site that is personalized to the user based on their geolocation. Edge functions act as middleware for the CDN &mdash; they run in front of other routes!
 
 i. Add the Swag component to the home page in `src/pages/index.tsx`
 
@@ -288,14 +296,17 @@ export default function Home() {
 
 ii. Fetch the swag in `netlify/context/DataProvider.tsx`
 
-```typescript
-const fetchSwag = async () => {
-  if (!swag.length) {
-    const response = await fetch('/api/swag');
-    const data = await response.json();
-    setSwag(data);
-  }
-};
+```diff
+- const swag = [] as Swag[];
++ const [swag, setSwag] = useState<Swag[]>([]);
+
+  const fetchSwag = async () => {
++    if (!swag.length) {
++      const response = await fetch('/api/swag');
++      const data = await response.json();
++      setSwag(data);
++    }
+  };
 ```
 
 iii. Sort items ascending based on distance to user in `netlify/functions/swag.ts`
