@@ -1,6 +1,36 @@
 const CONNECT_API_URL = import.meta.env.VITE_CONNECT_API_URL!;
 const API_TOKEN = import.meta.env.VITE_CONNECT_API_AUTH_TOKEN!;
 
+export async function getBooks() {
+  const query = `
+    query books {
+      allSpookyBook {
+        nodes {
+          id
+          isbn
+          title
+          author
+          description
+          imagePath
+        }
+      }
+    }
+  `;
+
+  const response = await window.fetch(CONNECT_API_URL, {
+    method: `POST`,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${API_TOKEN}`,
+    },
+    body: JSON.stringify({ query }),
+  });
+
+  const result = await response.json();
+
+  return result?.data?.allSpookyBook?.nodes;
+}
+
 export async function getProducts() {
   const query = `
     query products {
@@ -14,6 +44,7 @@ export async function getProducts() {
               url
             }
             price
+            stripe_price_id
           }
         }
       }

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import StoreContext from '~/context/store';
-import { getProducts } from '~/graphql';
+import { getBooks, getProducts } from '~/graphql';
 import type { Book, Swag } from '~/types/interfaces';
 
 interface Props {
@@ -11,11 +11,10 @@ function StoreProvider({ children }: Props) {
   const [books, setBooks] = useState<Book[]>([]);
   const [swag, setSwag] = useState<Swag[]>([]);
 
-  const fetchBooks = async (slug: string = '') => {
-    if (books.length <= 1) {
-      const response = await fetch(`/api/books/${slug}`);
-      const data = await response.json();
-      setBooks(Array.isArray(data) ? data : [data]);
+  const fetchBooks = async () => {
+    if (!books.length) {
+      const response = await getBooks();
+      setBooks(response);
     }
   };
 
@@ -29,13 +28,15 @@ function StoreProvider({ children }: Props) {
             title: string;
             image: { url: string };
             price: string;
-            description: string
+            stripe_price_id: string;
+            description: string;
           }) => {
             return {
               slug: r?.id,
               name: r?.title,
               imagePath: r?.image?.url,
               price: r?.price,
+              stripe_price_id: r?.stripe_price_id,
               description: r?.description,
             };
           }
