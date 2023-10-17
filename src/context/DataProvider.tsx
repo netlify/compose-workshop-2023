@@ -28,6 +28,7 @@ function StoreProvider({ children }: Props) {
             title: string;
             image: { url: string };
             price: string;
+            stripe_price_id: string;
             description: string;
           }) => {
             return {
@@ -35,6 +36,7 @@ function StoreProvider({ children }: Props) {
               name: r?.title,
               imagePath: r?.image?.url,
               price: r?.price,
+              stripe_price_id: r?.stripe_price_id,
               description: r?.description,
             };
           }

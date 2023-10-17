@@ -44,6 +44,7 @@ export async function getProducts() {
               url
             }
             price
+            stripe_price_id
           }
         }
       }

@@ -13,7 +13,7 @@ export default function BookPage() {
   const navigate = useNavigate();
   const { slug } = useParams('/books/:slug');
 
-  const book = books.find(b => b.slug === slug);
+  const book = books.find(b => b.id === slug);
 
   if (!book) {
     fetchBooks();
