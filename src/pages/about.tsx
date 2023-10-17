@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Link from '~/components/ui/Link';
-import { getAbout } from '~/graphql';
+// import { getAbout } from '~/graphql';
+import { getAbout } from '~/glue-code/storyblok';
 import type { AboutPage } from '~/types/interfaces';
 
 export default function About() {
@@ -9,7 +10,10 @@ export default function About() {
   useEffect(() => {
     getAbout()
       .then(data => {
-        const content = JSON.parse(data?.content);
+        const content =
+          typeof data?.content === `string`
+            ? JSON.parse(data?.content)
+            : data?.content;
         setAboutData({
           ...data,
           content,
