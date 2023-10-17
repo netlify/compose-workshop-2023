@@ -29,7 +29,7 @@ In this workshop, you will learn how to:
 
 <details><summary>Step 0. Initial setup</summary>
 
-i. [Fork this repo](https://github.com/netlify/compose-workshop-2023/fork) into either your personal account or one of your orgs, and ensure you copy all branches, not just `main`
+i. [Fork this repo](https://github.com/netlify/compose-workshop-2023/fork) into your personal account, and uncheck the `Copy the main branch only` checkbox, so that you copy all branches and not just `main`
 
 ii. Install the [Netlify GitHub app](https://github.com/apps/netlify/installations/select_target) on your org or repo if you have not done so already
 
@@ -50,15 +50,20 @@ v. Ensure you have the latest version of `netlify-cli` installed globally
 
 ```bash
 npm i netlify-cli -g
+netlify --version
 ```
 
 </details>
 
 <details><summary>Step 1. Create a new site and run local dev server </summary>
 
-i. [Create a new site](https://app.netlify.com/start) from GitHub
+i. [Create a new site](https://app.netlify.com/start) by going to **Team overview > Add new site > Import an existing project**. Click the Deploy with GitHub button. After you authenticate, search for your fork. For the `Branch to deploy` field, be sure to select `start-here` as your default production branch. You can keep the auto-populated values for all other fields. Click the Deploy button to deploy your site. 
+
+![](media/branch-to-deploy.png)
 
 ii. Rename site to something more memorable in **Site configuration > Site details > Change site name**.
+
+![](media/change-site-name.png)
 
 iii. Log in to the CLI, link your repo to your site, and start local dev server
 
