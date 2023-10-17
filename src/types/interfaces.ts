@@ -4,7 +4,7 @@ export interface Book {
   imagePath: string;
   isbn: string;
   price: number;
-  slug: string;
+  id: string;
   title: string;
 }
 
@@ -13,6 +13,7 @@ export interface Swag {
   imagePath: string;
   name: string;
   price: number;
+  stripe_price_id: string;
   rating: number;
   sku: string;
   slug: string;
