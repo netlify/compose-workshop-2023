@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import StoreContext from '~/context/store';
-import { getBooks, getProducts } from '~/graphql';
+import { getBooks } from '~/graphql';
+import { getProducts } from '~/glue-code/contentstack';
 import type { Book, Swag, ContentstackProduct } from '~/types/interfaces';
 
 interface Props {
