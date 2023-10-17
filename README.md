@@ -416,6 +416,18 @@ export const config: Config = {
 };
 ```
 
+v. Edge Functions are also great places to add A/B testing. You can add a cookie at the edge to segment user traffic into groups (also known as  buckets) to run experimentation. Set a new cookie in `netlify/edge-functions/abtest.ts`: 
+
+```diff
++ // set the new "ab-test-bucket" cookie
++ context.cookies.set({
++   name: bucketName,
++   value: newBucketValue,
++ });
+  
+  return response;
+```
+
 💡 Learn more about [Edge Functions](https://docs.netlify.com/edge-functions/overview/) in our docs.
 
 </details>
