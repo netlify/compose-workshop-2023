@@ -1,66 +1,47 @@
 import { useEffect, useState } from 'react';
 import Link from '~/components/ui/Link';
 import { getAbout } from '~/graphql';
+import type { AboutPage } from '~/types/interfaces';
 
 export default function About() {
-  const [aboutData, setAboutData] = useState<{
-    content: {
-      title: string;
-      headerImage: {
-        filename: string;
-      };
-      subHeaderImage: {
-        filename: string;
-      };
-      footerImage: {
-        filename: string;
-      };
-      description: string;
-      body: {
-        items: {
-          _uid: string;
-          itemValue: string;
-        }[];
-      }[];
-    };
-  }>();
+  const [aboutData, setAboutData] = useState<AboutPage>();
 
   useEffect(() => {
     getAbout()
-      .then(d => {
-        const content = JSON.parse(d?.content);
+      .then(data => {
+        const content = JSON.parse(data?.content);
         setAboutData({
-          ...d,
+          ...data,
           content,
         });
       })
-      .catch(e => console.error(e));
+      .catch(error => console.error(error));
   }, []);
 
-  const titleSplit = aboutData?.content?.title?.split('Netlify Compose 2023');
+  if (!aboutData) {
+    return null;
+  }
 
+  const titleSplit = aboutData?.content?.title?.split('Netlify Compose 2023');
   const linkStyles = 'text-[#30e6e2] hover:underline hover:text-[#defffe]';
   return (
     <section className="text-white">
-      {aboutData?.content?.headerImage ? (
-        <div className="my-8 flex flex-col justify-center items-center">
-          <img
-            alt="Netlify logo"
-            className="my-2"
-            height={90}
-            src={aboutData?.content?.headerImage?.filename}
-            width={220}
-          />
-          <img
-            alt="Compose logo"
-            className="my-2"
-            height={105}
-            src={aboutData?.content?.subHeaderImage?.filename}
-            width={600}
-          />
-        </div>
-      ) : null}
-
+      <div className="my-8 flex flex-col justify-center items-center">
+        <img
+          alt="Netlify logo"
+          className="my-2"
+          height={90}
+          src={aboutData?.content?.headerImage?.filename}
+          width={220}
+        />
+        <img
+          alt="Compose logo"
+          className="my-2"
+          height={105}
+          src={aboutData?.content?.subHeaderImage?.filename}
+          width={600}
+        />
+      </div>
       <div className="flex justify-center">
         <div className="max-w-[600px]">
           <h1 className="text-center text-xl mb-8">

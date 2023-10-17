@@ -31,3 +31,25 @@ export interface ContentstackProduct extends Swag {
   };
   stripe_price_id: string;
 }
+
+export interface AboutPage {
+  content: {
+    title: string;
+    headerImage: {
+      filename: string;
+    };
+    subHeaderImage: {
+      filename: string;
+    };
+    footerImage: {
+      filename: string;
+    };
+    description: string;
+    body: {
+      items: {
+        _uid: string;
+        itemValue: string;
+      }[];
+    }[];
+  };
+}
