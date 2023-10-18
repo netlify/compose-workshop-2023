@@ -556,7 +556,7 @@ vii. Replace hardcoded list items with dynamic list from Storyblok in `src/pages
 
 <details><summary>Step 9. Utilizing existing custom data sources</summary>
 
-Follow the instructions in the [Dynamic CMS Connector repo](https://github.com/netlify/workshop_mock-cms-connector)!
+Follow the instructions in the [Dynamic CMS Connector repo](https://github.com/netlify/workshop_dynamic-cms-connector)!
 
 </details>
 
