@@ -18,8 +18,8 @@ export async function getProducts() {
             stripe_price_id
             title
             location {
-              lat
-              long
+              latitude: lat
+              longitude: long
             }
           }
         }
@@ -44,7 +44,7 @@ export async function getProducts() {
   return geo
     ? products.sort(
         (a: any, b: any) =>
-          haversine(a.location, geo) - haversine(b.location, geo)
+          haversine(a.location?.[0], geo) - haversine(b.location?.[0], geo)
       )
     : products;
 }
