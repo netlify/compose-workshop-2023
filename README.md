@@ -558,6 +558,8 @@ vii. Replace hardcoded list items with dynamic list from Storyblok in `src/pages
 
 Follow the instructions in the [Dynamic CMS Connector repo](https://github.com/netlify/workshop_dynamic-cms-connector)!
 
+We also have the [S3 Connector](https://github.com/netlify/workshop_compose-s3-demo) available.
+
 </details>
 
 <details><summary>Step 10. Bonus features of the Netlify platform</summary>
