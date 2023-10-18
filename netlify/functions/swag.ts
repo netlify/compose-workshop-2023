@@ -1,6 +1,6 @@
 import { Config } from '@netlify/functions';
 
-const ITEMS_COUNT = 3;
+const ITEMS_COUNT = 5;
 
 function selectRandomItems(arr, n: number) {
   return arr
