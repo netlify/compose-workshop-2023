@@ -148,7 +148,7 @@ iv. Export custom config to control method, route, etc in `netlify/functions/boo
 ```typescript
 export const config: Config = {
   method: 'GET',
-  path: '/api/books{/:slug}?',
+  path: '/api/books{/:id}?',
 };
 ```
 
@@ -165,29 +165,29 @@ v. Change your clientside API call to new route in `src/context/DataProvider.tsx
 -     setBooks(data);
 -   }
 -  };
-+  const fetchBooks = async (slug: string = '') => {
++  const fetchBooks = async (id: string = '') => {
 +    if (books.length <= 1) {
-+      const response = await fetch(`/api/books/${slug}`);
++      const response = await fetch(`/api/books/${id}`);
 +      const data = await response.json();
 +      setBooks(Array.isArray(data) ? data : [data]);
 +    }
 +  };
 ```
 
-vi. Extract and log the slug from the URL params in `netlify/functions/books.ts`
+vi. Extract and log the id from the URL params in `netlify/functions/books.ts`
 
 ```diff
 -export default async (req: Request) => {
 +export default async (req: Request, context: Context) => {
-+  const { slug } = context.params;
-+  console.log(`Looking up ${slug || 'all books'}...`);
++  const { id } = context.params;
++  console.log(`Looking up ${id || 'all books'}...`);
 ```
 
 vii. Return a single book if the slug is present before the last return statement
 
 ```typescript
-if (slug) {
-  const book = books.find(b => b.slug === slug);
+if (id) {
+  const book = books.find(b => b.id === id);
   if (!book) {
     return new Response('Not found', { status: 404 });
   }
@@ -201,7 +201,7 @@ if (slug) {
 
 <details><summary>Step 3. Branches, CI/CD, and Deploy Previews</summary>
 
-Create a new branch, commit changes, push the branch, and open a pull request
+Create a new branch, commit changes, push the branch, and open a pull request *against the `start-here` branch of your own repo.*
 
 ```bash
 git checkout -b feat/bookshelf
@@ -209,6 +209,14 @@ git add -A
 git commit -m "Adding a list of books to the home page"
 git push origin feat/bookshelf
 ```
+
+Since you're working in a fork, be sure to change the base repo and branch: 
+
+Before: 
+![](media/fork-base-branch-before.png)
+
+After: 
+![](media/fork-base-branch-after.png)
 
 You should see a link to the Deploy Preview as a comment by the Netlify bot on the pull request. Pushing to an open pull request [will kick off a new build](https://www.netlify.com/products/build/) in the Continuous Integration pipeline, and you can inspect the deploy logs as the build is building and deploying.
 
@@ -218,11 +226,11 @@ In the Deploy Preview itself, you'll notice a floating toolbar anchored to the b
 
 Back in the pull request, merge to main. This will kick off a production build. Every deploy is [atomic](https://jamstack.org/glossary/atomic/) and [immutable](https://jamstack.org/glossary/immutable/), which makes [instant rollbacks](https://docs.netlify.com/site-deploys/manage-deploys/#rollbacks) a breeze.
 
-In your local repo, sync up with the changes from main again: 
+In your local repo, sync up with the changes from `start-here` again: 
 
 ```bash
-git checkout main
-git pull origin main
+git checkout start-here
+git pull origin start-here
 ```
 
 💡 Learn more about [Git workflows](https://docs.netlify.com/git/overview/) and [site deploys](https://docs.netlify.com/site-deploys/overview/) in our docs.
@@ -231,7 +239,7 @@ git pull origin main
 
 <details><summary>Step 4. Headers and redirects</summary>
 
-You'll notice that when you refresh a page on the `/books/{slug}` route, the site 404s. Why is that? Since this frontend stack utilizes React as an SPA (Single Page Application), there is only one single HTML file (`/index.html`) inside of the deploy, and routing is managed exclusively by JavaScript referenced in that file. We'll need to add a [redirect](https://docs.netlify.com/routing/redirects/rewrites-proxies/#history-pushstate-and-single-page-apps) that routes 404s to `/index.html`.
+You'll notice that when you refresh a page on the `/books/{id}` route, the site 404s. Why is that? Since this frontend stack utilizes React as an SPA (Single Page Application), there is only one single HTML file (`/index.html`) inside of the deploy, and routing is managed exclusively by JavaScript referenced in that file. We'll need to add a [redirect](https://docs.netlify.com/routing/redirects/rewrites-proxies/#history-pushstate-and-single-page-apps) that routes 404s to `/index.html`.
 
 Inside your publish directory (for this repo, `/public`), add a `_redirects` file that contains the following: 
 
@@ -274,7 +282,7 @@ i. Set fine-grained cache-control headers before fetching in `netlify/functions/
 
 ```typescript
 const etag = createHash('md5')
-  .update(slug || 'all')
+  .update(id || 'all')
   .digest('hex');
 
 const headers = {
@@ -292,8 +300,8 @@ if (req.headers.get('if-none-match') === etag) {
 ii. Return headers on all Response objects
 
 ```diff
-if (slug) {
-  const book = books.find(b => b.slug === slug);
+if (id) {
+  const book = books.find(b => b.id === id);
   if (!book) {
 -   return new Response('Not found', { status: 404 });
 +   return new Response('Not found', { status: 404, headers });
