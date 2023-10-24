@@ -7,8 +7,8 @@ const links = [
     path: '/',
   },
   {
-    label: '👻 Spook',
-    path: '/spook',
+    label: '👻 Storytime',
+    path: '/storytime',
   },
   {
     label: '🔮 About',
