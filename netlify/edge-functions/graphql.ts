@@ -26,8 +26,8 @@ export default async (request: Request, context: Context) => {
   return Response.json(result, {
     headers: {
       'Content-Type': 'application/json',
-      'cache-control': 'public,max-age=120',
-      cached: 'true',
+      'cache-control': 'public, max-age=3600',
+      'Netlify-Vary': 'query=query',
     },
   });
 };

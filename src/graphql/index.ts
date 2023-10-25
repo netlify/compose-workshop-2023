@@ -27,13 +27,16 @@ export async function getProducts() {
       }
     `;
 
-  const response = await fetch('/graphql', {
-    method: `POST`,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ query }),
-  });
+  const response = await fetch(
+    `/graphql?query=${JSON.stringify({ query, variables: {} })}`,
+    {
+      method: `POST`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ query }),
+    }
+  );
 
   const result = await response.json();
 
