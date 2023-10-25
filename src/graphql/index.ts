@@ -28,7 +28,10 @@ export async function getProducts() {
     `;
 
   const response = await fetch(
-    `/graphql?query=${JSON.stringify({ query, variables: {} })}`,
+    `/graphql?query=${JSON.stringify({
+      query: query.replace(/\n/g, ' '),
+      variables: {},
+    })}`,
     {
       method: `POST`,
       headers: {

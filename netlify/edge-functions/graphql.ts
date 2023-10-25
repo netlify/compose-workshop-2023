@@ -6,8 +6,6 @@ export default async (request: Request, context: Context) => {
 
   const { query, variables } = await request.json();
 
-  console.log(CONNECT_API_URL, query, variables);
-
   const res = await fetch(CONNECT_API_URL, {
     method: `POST`,
     headers: {
@@ -17,8 +15,6 @@ export default async (request: Request, context: Context) => {
     body: JSON.stringify({ query, variables }),
   });
 
-  console.log(res);
-
   const result = await res.json();
 
   console.log(result);
@@ -26,7 +22,7 @@ export default async (request: Request, context: Context) => {
   return Response.json(result, {
     headers: {
       'Content-Type': 'application/json',
-      'cache-control': 'public, max-age=3600',
+      'cache-control': 'public, max-age=3600, s-maxage=3600',
       'Netlify-Vary': 'query=query',
     },
   });
