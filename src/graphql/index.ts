@@ -35,7 +35,7 @@ export async function getProducts() {
     {
       method: `POST`,
       headers: {
-        'x-nf-debug-logging': true,
+        'x-nf-debug-logging': 'true',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ query }),
