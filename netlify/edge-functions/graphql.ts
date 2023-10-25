@@ -24,7 +24,6 @@ export default async (request: Request, context: Context) => {
       'Content-Type': 'application/json',
       'cache-control': 'public, max-age=3600, s-maxage=3600',
       'Netlify-Vary': 'query=query',
-      'x-nf-debug-logging': true
     },
   });
 };
