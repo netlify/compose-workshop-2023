@@ -27,11 +27,10 @@ export async function getProducts() {
       }
     `;
 
-  const response = await fetch(CONNECT_API_URL, {
+  const response = await fetch('/graphql', {
     method: `POST`,
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${API_TOKEN}`,
     },
     body: JSON.stringify({ query }),
   });
