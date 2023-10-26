@@ -72,13 +72,19 @@ export async function getBooks() {
     }
   `;
 
-  const response = await fetch(CONNECT_API_URL, {
-    method: `POST`,
+  const params = JSON.stringify({
+    query,
+    variables: {},
+  });
+
+  const b64Parms = btoa(params);
+
+  const response = await fetch(`/graphql=${b64Parms}`, {
+    method: `GET`,
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${API_TOKEN}`,
     },
-    body: JSON.stringify({ query }),
   });
 
   const result = await response.json();
@@ -95,13 +101,19 @@ export async function getAbout() {
       }
     `;
 
-  const response = await fetch(CONNECT_API_URL, {
-    method: `POST`,
+  const params = JSON.stringify({
+    query,
+    variables: {},
+  });
+
+  const b64Parms = btoa(params);
+
+  const response = await fetch(`/graphql?query=${b64Parms}`, {
+    method: `GET`,
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${API_TOKEN}`,
     },
-    body: JSON.stringify({ query }),
   });
 
   const result = await response.json();
