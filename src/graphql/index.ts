@@ -1,7 +1,5 @@
 import haversine from 'haversine';
 
-const CONNECT_API_URL = import.meta.env.VITE_CONNECT_API_URL!;
-const API_TOKEN = import.meta.env.VITE_CONNECT_API_AUTH_TOKEN!;
 const ITEMS_COUNT = 5;
 
 export async function getProducts() {
@@ -83,7 +81,6 @@ export async function getBooks() {
     method: `GET`,
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${API_TOKEN}`,
     },
   });
 
@@ -112,7 +109,6 @@ export async function getAbout() {
     method: `GET`,
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${API_TOKEN}`,
     },
   });
 
