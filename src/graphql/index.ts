@@ -77,7 +77,7 @@ export async function getBooks() {
 
   const b64Parms = btoa(params);
 
-  const response = await fetch(`/graphql=${b64Parms}`, {
+  const response = await fetch(`/graphql?query=${b64Parms}`, {
     method: `GET`,
     headers: {
       'Content-Type': 'application/json',
