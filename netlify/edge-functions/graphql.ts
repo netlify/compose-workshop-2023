@@ -1,10 +1,15 @@
 import { Config, Context } from '@netlify/edge-functions';
+import { encode, decode } from 'https://deno.land/std/encoding/base64.ts';
 
 export default async (request: Request, context: Context) => {
   const CONNECT_API_URL = Netlify.env.get('VITE_CONNECT_API_URL');
   const API_TOKEN = Netlify.env.get('VITE_CONNECT_API_AUTH_TOKEN');
 
-  const { query, variables } = await request.json();
+  const url = new URL(request.url);
+
+  const queryArgs = url.searchParams.get('query');
+
+  const fromBase64Args = new TextDecoder().decode(decode(queryArgs));
 
   const res = await fetch(CONNECT_API_URL, {
     method: `POST`,
@@ -12,12 +17,10 @@ export default async (request: Request, context: Context) => {
       Authorization: `Bearer ${API_TOKEN}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ query, variables }),
+    body: fromBase64Args,
   });
 
   const result = await res.json();
-
-  console.log(result);
 
   return Response.json(result, {
     headers: {

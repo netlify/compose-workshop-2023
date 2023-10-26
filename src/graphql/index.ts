@@ -27,20 +27,20 @@ export async function getProducts() {
       }
     `;
 
-  const response = await fetch(
-    `/graphql?query=${JSON.stringify({
-      query: query.replace(/\n/g, ' '),
-      variables: {},
-    })}`,
-    {
-      method: `POST`,
-      headers: {
-        'x-nf-debug-logging': 'true',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ query }),
-    }
-  );
+  const params = JSON.stringify({
+    query,
+    variables: {},
+  });
+
+  const b64Parms = btoa(params);
+
+  const response = await fetch(`/graphql?query=${b64Parms}`, {
+    method: `GET`,
+    headers: {
+      'x-nf-debug-logging': 'true',
+      'Content-Type': 'application/json',
+    },
+  });
 
   const result = await response.json();
 
