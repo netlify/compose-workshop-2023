@@ -81,6 +81,7 @@ export async function getBooks() {
     method: `GET`,
     headers: {
       'Content-Type': 'application/json',
+      'x-nf-debug-logging': 'true',
     },
   });
 
@@ -109,6 +110,7 @@ export async function getAbout() {
     method: `GET`,
     headers: {
       'Content-Type': 'application/json',
+      'x-nf-debug-logging': 'true',
     },
   });
 
