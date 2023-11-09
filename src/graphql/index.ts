@@ -1,6 +1,17 @@
 import haversine from 'haversine';
+const CONNECT_API_URL = import.meta.env.VITE_CONNECT_API_URL!;
+const API_TOKEN = import.meta.env.VITE_CONNECT_API_AUTH_TOKEN!;
 
 const ITEMS_COUNT = 5;
+
+const headers = {
+  'x-nf-debug-logging': 'true',
+  Authorization: `Bearer ${API_TOKEN}`,
+  'x-api-url': CONNECT_API_URL,
+  'Content-Type': 'application/json',
+};
+
+const EDGE_FUNCTION_URL = `https://connect-edge.netlifystg.app/graphql`
 
 export async function getProducts() {
   const query = `
@@ -15,7 +26,6 @@ export async function getProducts() {
             price
             rating
             stripe_price_id
-            title
             location {
               latitude: lat
               longitude: long
@@ -32,12 +42,9 @@ export async function getProducts() {
 
   const b64Parms = btoa(params);
 
-  const response = await fetch(`/graphql?query=${b64Parms}`, {
+  const response = await fetch(`${EDGE_FUNCTION_URL}?query=${b64Parms}`, {
     method: `GET`,
-    headers: {
-      'x-nf-debug-logging': 'true',
-      'Content-Type': 'application/json',
-    },
+    headers,
   });
 
   const result = await response.json();
@@ -77,12 +84,9 @@ export async function getBooks() {
 
   const b64Parms = btoa(params);
 
-  const response = await fetch(`/graphql?query=${b64Parms}`, {
+  const response = await fetch(`${EDGE_FUNCTION_URL}?query=${b64Parms}`, {
     method: `GET`,
-    headers: {
-      'Content-Type': 'application/json',
-      'x-nf-debug-logging': 'true',
-    },
+    headers,
   });
 
   const result = await response.json();
@@ -90,6 +94,10 @@ export async function getBooks() {
 }
 
 export async function getAbout() {
+  const data = await fetch('/api/test');
+
+  console.log(await data.json());
+
   const query = `
     query about {
         storyblokEntry(full_slug: { eq: "about" }) {
@@ -106,12 +114,9 @@ export async function getAbout() {
 
   const b64Parms = btoa(params);
 
-  const response = await fetch(`/graphql?query=${b64Parms}`, {
+  const response = await fetch(`${EDGE_FUNCTION_URL}?query=${b64Parms}`, {
     method: `GET`,
-    headers: {
-      'Content-Type': 'application/json',
-      'x-nf-debug-logging': 'true',
-    },
+    headers,
   });
 
   const result = await response.json();
