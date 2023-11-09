@@ -573,6 +573,11 @@ Congrats! You just built a composable website. If we have time, we'll walk throu
 
 </details>
 
+## Netlify Connect Credentials
+```
+VITE_CONNECT_API_AUTH_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2OTcyMjgwMzYyNDMsImV4cCI6NDg1MDgyODAzNjI0MywiaXNzIjoibmV0bGlmeS1jb25uZWN0IiwiaHR0cHM6Ly9uZXRsaWZ5LmNvbS9qd3QvY2xhaW1zIjp7ImRhdGFfbGF5ZXJfaWQiOiJjYjM0ZTdmMi00YWVmLTQ1ZDgtOGViOC0zMmFiZWVkNTA1OTAiLCJkYXRhX2xheWVyX3Rva2VuX2lkIjoiYTdjNTIyMWEtODFhNi00MjNlLTg3YjktOGIzNjYwZThhMWJhIiwiYWNjb3VudF9wZXJtaXNzaW9ucyI6eyJyIjp0cnVlfX19.A6lTiggYCXAsHc7o7KfbnunPCju2FMBlcZsmW13smdY
+VITE_CONNECT_API_URL=https://compose-conf-o5lhw4-prod.api.netlify-connect.com/graphql
+```
 
 ## Recent Enterprise-focused resources from our blog
 
