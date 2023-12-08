@@ -117,6 +117,35 @@ export async function getBooks() {
   return result?.data?.allHolidayStory?.nodes;
 }
 
+export async function searchBooks(searchText: string) {
+  const query = `
+    query searchBooks($searchText: String) {
+        searchHolidayStory(searchText: $searchText) {
+          nodes {
+            id
+            title
+            body
+            image 
+          }
+        }
+      }
+    `;
+
+  const response = await fetch(CONNECT_API_URL, {
+    method: `POST`,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${API_TOKEN}`,
+    },
+    body: JSON.stringify({ query, variables: { searchText } }),
+  });
+
+  const result = await response.json();
+
+  const products = result?.data?.searchHolidayStory?.nodes;
+  return products;
+}
+
 export async function getSimilarBooks(nodeId: string) {
   const query = `
     query similar($id: ID!) {

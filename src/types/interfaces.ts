@@ -12,6 +12,7 @@ export interface Swag {
     latitude: number;
     longitude: number;
   };
+  id: string;
   name: string;
   price: number;
   rating: number;
