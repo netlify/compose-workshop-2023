@@ -28,7 +28,7 @@ function Bookshelf() {
         })
         .catch(e => console.error(e));
     } else {
-      setStateBooks([])
+      setStateBooks([]);
     }
   }, [searchText]);
 
@@ -55,7 +55,7 @@ function Bookshelf() {
 
             if (!value) {
               setSearchTextInput(``);
-              setSearchText(``)
+              setSearchText(``);
             } else {
               setSearchTextInput(value);
             }
@@ -71,19 +71,22 @@ function Bookshelf() {
       </div>
       <div className="flex my-8 bg-slate-600 rounded-xl gap-8 p-8 flex-wrap mt-8">
         {(searchText && stateBooks?.length ? stateBooks : books)?.map(book => (
-          <Link
-            key={book.id}
-            className="max-w-[calc(25%-24px)] hover:scale-105 transition-transform duration-300"
-            to={`/books/${book.id}`}
-          >
-            <Image
-              src={book.image}
-              layout="constrained"
-              width={400}
-              height={300}
-              alt="A lovely bath"
-            />
-          </Link>
+          <>
+            <Link
+              key={book.id}
+              className="max-w-[calc(25%-24px)] hover:scale-105 transition-transform duration-300"
+              to={`/books/${book.id}`}
+            >
+              <Image
+                src={book.image}
+                layout="constrained"
+                width={400}
+                height={300}
+                alt="A lovely bath"
+              />
+              <p className="text-white text-center"> {book?.title}</p>
+            </Link>
+          </>
         ))}
       </div>
     </section>

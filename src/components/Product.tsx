@@ -32,13 +32,12 @@ export default function Product(props: Props) {
   useEffect(() => {
     getSimilarProducts(id)
       .then(data => {
-        console.log(data);
         setSimilarProducts(data);
       })
       .catch(e => {
         console.error(e);
       });
-  }, []);
+  }, [id]);
 
   return (
     <>
