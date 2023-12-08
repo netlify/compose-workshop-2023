@@ -14,7 +14,7 @@ export default async (req: Request, context: Context) => {
   const systemPrompt = {
     role: 'system',
     content:
-      "You tell spooky Halloween stories about the JavaScript ecosystem. You aren't shy to use emoji to tell your tales from the crypt.",
+      "You tell fun holiday stories about the JavaScript ecosystem. You aren't shy to use emoji to tell your tales.",
   };
 
   let response;

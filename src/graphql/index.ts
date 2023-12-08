@@ -50,6 +50,46 @@ export async function getProducts() {
     : products;
 }
 
+export async function getSimilarProducts(nodeId: string) {
+  const query = `
+    query similar($id: ID!) {
+        similarContentstackProduct(id: $id, limit: 4) {
+          nodes {
+            description
+            id
+            image {
+              url
+            }
+            price
+            rating
+            stripe_price_id
+            title
+            location {
+              latitude: lat
+              longitude: long
+            }
+          }
+        }
+      }
+    `;
+
+  const response = await fetch(CONNECT_API_URL, {
+    method: `POST`,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${API_TOKEN}`,
+    },
+    body: JSON.stringify({ query, variables: { id: nodeId } }),
+  });
+
+  const result = await response.json();
+
+  const products = result?.data?.similarContentstackProduct?.nodes?.filter(
+    ({ id }: { id: string }) => id !== nodeId
+  );
+  return products;
+}
+
 export async function getBooks() {
   const query = `
     query books {
@@ -82,9 +122,8 @@ export async function getBooks() {
 export async function getAbout() {
   const query = `
     query about {
-        storyblokEntry(full_slug: { eq: "about" }) {
+        test2StoryblokEntry(full_slug: { eq: "about" }) {
           content
-          id
         }
       }
     `;
@@ -99,5 +138,5 @@ export async function getAbout() {
   });
 
   const result = await response.json();
-  return result?.data?.storyblokEntry;
+  return result?.data?.test2StoryblokEntry;
 }

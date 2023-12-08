@@ -14,9 +14,9 @@ function Bookshelf() {
 
   return (
     <section>
-      <Heading id="bookshelf">👻 Browse our boooooks! 👻</Heading>
+      <Heading id="bookshelf">☃️ Browse our boooooks! ☃️</Heading>
       <div className="flex my-8 bg-slate-600 rounded-xl gap-8 p-8 flex-wrap mt-8">
-        {books.map(book => (
+        {books?.map(book => (
           <Link
             key={book.id}
             className="max-w-[calc(25%-24px)] hover:scale-105 transition-transform duration-300"
