@@ -3,9 +3,9 @@ import { useContext } from 'react';
 import DataContext from '~/context/store';
 import Button from '~/components/ui/Button';
 import Card from '~/components/ui/Card';
-import Product from '~/components/Product';
 import Footer from '~/components/ui/Footer';
 import { useNavigate, useParams } from '~/router';
+import Book from '~/components/Book';
 
 export default function BookPage() {
   const { books, fetchBooks } = useContext(DataContext);
@@ -22,7 +22,7 @@ export default function BookPage() {
 
   return (
     <section>
-      <Product {...book} />
+      <Book {...book} />
       <Button onClick={() => navigate('/')}>← Back</Button>
       <Footer />
     </section>

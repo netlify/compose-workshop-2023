@@ -1,4 +1,5 @@
 import { useContext, useEffect } from 'react';
+import { Image } from '@unpic/react';
 
 import DataContext from '~/context/store';
 import Heading from '~/components/ui/Heading';
@@ -22,10 +23,12 @@ function Bookshelf() {
             className="max-w-[calc(25%-24px)] hover:scale-105 transition-transform duration-300"
             to={`/books/${book.id}`}
           >
-            <img
-              className="aspect-square drop-shadow rounded-lg"
-              loading="lazy"
-              src={book.imagePath}
+            <Image
+              src={book.image}
+              layout="constrained"
+              width={400}
+              height={300}
+              alt="A lovely bath"
             />
           </Link>
         ))}

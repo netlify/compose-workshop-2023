@@ -93,13 +93,11 @@ export async function getSimilarProducts(nodeId: string) {
 export async function getBooks() {
   const query = `
     query books {
-      allSpookyBook {
+      allHolidayStory {
         nodes {
-          author
-          description
+          body
           id
-          imagePath
-          isbn
+          image
           title
         }
       }
@@ -116,7 +114,7 @@ export async function getBooks() {
   });
 
   const result = await response.json();
-  return result?.data?.allSpookyBook?.nodes;
+  return result?.data?.allHolidayStory?.nodes;
 }
 
 export async function getAbout() {

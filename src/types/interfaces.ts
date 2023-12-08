@@ -1,11 +1,8 @@
 export interface Book {
-  author: string;
-  description: string;
   id: string;
-  imagePath: string;
-  isbn: string;
-  price: number;
+  image: string;
   title: string;
+  body: string
 }
 
 export interface Swag {
