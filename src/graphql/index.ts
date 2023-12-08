@@ -117,6 +117,37 @@ export async function getBooks() {
   return result?.data?.allHolidayStory?.nodes;
 }
 
+export async function getSimilarBooks(nodeId: string) {
+  const query = `
+    query similar($id: ID!) {
+        similarHolidayStory(id: $id, limit: 4) {
+          nodes {
+            id
+            title
+            body
+            image 
+          }
+        }
+      }
+    `;
+
+  const response = await fetch(CONNECT_API_URL, {
+    method: `POST`,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${API_TOKEN}`,
+    },
+    body: JSON.stringify({ query, variables: { id: nodeId } }),
+  });
+
+  const result = await response.json();
+
+  const products = result?.data?.similarHolidayStory?.nodes?.filter(
+    ({ id }: { id: string }) => id !== nodeId
+  );
+  return products;
+}
+
 export async function getAbout() {
   const query = `
     query about {

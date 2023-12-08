@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import BuyNow from '~/components/BuyNow';
 import Card from '~/components/ui/Card';
-// import { getSimilarProducts } from '~/graphql';
+import { getSimilarBooks } from '~/graphql';
 
 interface Props {
   id: string;
@@ -14,18 +14,18 @@ interface Props {
 export default function Book(props: Props) {
   const { title, body, image, id } = props;
 
-  //   const [similarProducts, setSimilarProducts] = useState([]);
+  const [similarBooks, setSimilarBooks] = useState([]);
 
-  //   useEffect(() => {
-  //     getSimilarProducts(id)
-  //       .then(data => {
-  //         console.log(data);
-  //         setSimilarProducts(data);
-  //       })
-  //       .catch(e => {
-  //         console.error(e);
-  //       });
-  //   }, []);
+  useEffect(() => {
+    getSimilarBooks(id)
+      .then(data => {
+        console.log(data);
+        setSimilarBooks(data);
+      })
+      .catch(e => {
+        console.error(e);
+      });
+  }, [id]);
 
   return (
     <>
@@ -44,29 +44,27 @@ export default function Book(props: Props) {
           </div>
         </div>
       </Card>
-      {/* 
-      {similarProducts?.length && (
+
+      {similarBooks?.length && (
         <>
           <h1 className="text-4xl font-extrabold text-white">
-            Similar Products
+            Similar Stories
           </h1>
           <div className="flex gap-8">
-            {similarProducts.map(item => (
-              <Card key={item.slug} type="slate">
-                <Link key={item.slug} to={`/swag/${item.slug}`}>
+            {similarBooks.map(item => (
+              <Card key={item.id} type="slate">
+                <Link key={item.id} to={`/books/${item.id}`}>
                   <img
                     className="aspect-square drop-shadow rounded-lg hover:scale-105 transition-transform duration-300"
-                    src={item.image?.url}
+                    src={item.image}
                   />
                 </Link>
                 <h3 className="text-xl font-bold text-white">{item?.title}</h3>
-                <p className="text-xl text-green-500">${item.price}</p>
-                <BuyNow priceId={item?.stripe_price_id} />
               </Card>
             ))}
           </div>
         </>
-      )} */}
+      )}
     </>
   );
 }
